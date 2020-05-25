@@ -7,9 +7,9 @@ import { Counter } from './components/Counter';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
-import { Quiz } from './Quiz.js';
+import { Quiz } from './components/Quiz.js';
 
-import './custom.css'
+import './custom.css';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -36,8 +36,7 @@ export default class App extends Component {
                 <Fragment>
                     {this.state.isReady
                         ? (
-                            //<Quiz /> 
-                            <p>dummshgkjgf</p>
+                            <Quiz />
 
                         ) : (
                             <button onClick={this.handleStartClick}>Start Quiz</button>
