@@ -8,6 +8,8 @@ import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 import { Quiz } from './components/Quiz.js';
+import { Link } from 'react-router-dom';
+import { NavLink } from 'reactstrap';
 
 import './custom.css';
 
@@ -19,29 +21,44 @@ export default class App extends Component {
     }
 
     handleStartClick = () => {
+        document.getElementById('StartBtn').style.display = 'none';
         this.setState({
             isReady: true
         });
+
     }
 
-    render() {
+    render() {        
         return (
 
             <Layout>
                 <Route exact path='/' component={Home} />
                 <Route path='/counter' component={Counter} />
                 <AuthorizeRoute path='/fetch-data' component={FetchData} />
+                <AuthorizeRoute path='/play-quiz' component={Quiz} />
                 <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
 
+                
+
+                <Link to="/play-quiz">
+                    <button style={{ display: 'block' }} id='StartBtn' onClick={this.handleStartClick}>Start Quiz</button>
+                </Link>
+                
+
+                {/*
                 <Fragment>
                     {this.state.isReady
                         ? (
                             <Quiz />
 
                         ) : (
-                            <button onClick={this.handleStartClick}>Start Quiz</button>
+                            <div>
+                            <button onClick={this.handleStartClick} tag={Link} to="/play-quiz" >Start Quiz</button>
+                                <NavLink tag={Link} className="btn btn-success text-light" to="/play-quiz">Start-quiz</NavLink>
+                            </div>
                         )}
                 </Fragment>
+                */}
             </Layout>
 
         );
