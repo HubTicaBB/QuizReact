@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReactQuiz.Data;
+using ReactQuiz.Models;
 
 namespace ReactQuiz.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class QuestionsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +23,7 @@ namespace ReactQuiz.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetQuestions()
+        public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
         {
             var questions = await _context.Questions.Include(q => q.Answers).ToListAsync();
 
