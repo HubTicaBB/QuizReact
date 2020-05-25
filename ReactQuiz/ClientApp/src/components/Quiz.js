@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 //import { QuizQuestion } from './QuizQuestion.js';
-//import { QuizFinish } from './QuizFinish.js';
+import { QuizFinish } from './QuizFinish.js';
 
 let quizData = require('./QuizData.json') //fetch
 
