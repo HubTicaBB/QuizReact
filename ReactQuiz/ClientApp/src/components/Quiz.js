@@ -52,7 +52,7 @@ export class Quiz extends React.Component {
 
         if (!this.state.isAnswered) {
 
-            if (buttonText === quizData[this.state.position - 1].correctAnswer) {
+            if (buttonText === this.state.quizData[this.state.position - 1].correctAnswer) {
 
                 this.setState({ incorrectAnswer: false, points: this.state.points + 1 });
             }
@@ -65,8 +65,8 @@ export class Quiz extends React.Component {
 
 
     render() {
-        const { error, isLoaded, quizData } = this.state;
-        const isQuizFinished = ((this.state.position - 1) === quizData.length)        
+        const { error, isLoaded } = this.state;
+        const isQuizFinished = ((this.state.position - 1) === this.state.quizData.length)
 
         if (error) {
             return <div>Error: {error.message}</div>
@@ -86,9 +86,9 @@ export class Quiz extends React.Component {
                     {isQuizFinished ?
                         <QuizFinish resetClickHandler={this.handleResetClick} showPointsHandler={this.state.points} /> :
                         <QuizQuestion showNextQuestionHandler={this.showNextQuestion} handleAnswerQuestion={this.handleAnswerQuestion} isAnswered={this.state.isAnswered}
-                            quizQuestion={quizData[this.state.position - 1]} incorrectAnswer={this.state.incorrectAnswer} />}
+                            quizQuestion={this.state.quizData[this.state.position - 1]} incorrectAnswer={this.state.incorrectAnswer} />}
                 </div>
             )
-        }        
+        }
     }
 }
