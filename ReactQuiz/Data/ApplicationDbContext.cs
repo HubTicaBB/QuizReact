@@ -17,5 +17,9 @@ namespace ReactQuiz.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Highscore> Highscores { get; set; }
+        public DbSet<Answer> Answers { get; set; }
     }
 }
