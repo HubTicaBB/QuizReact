@@ -65,8 +65,8 @@ export class Quiz extends React.Component {
 
 
     render() {
-        const isQuizFinished = ((this.state.position - 1) === quizData.length)
-        const { error, isLoaded, activities } = this.state;
+        const { error, isLoaded, quizData } = this.state;
+        const isQuizFinished = ((this.state.position - 1) === quizData.length)        
 
         if (error) {
             return <div>Error: {error.message}</div>

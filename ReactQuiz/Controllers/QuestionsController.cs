@@ -23,7 +23,7 @@ namespace ReactQuiz.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
+        public async Task<IActionResult> GetQuestions()
         {
             var questions = await _context.Questions.Include(q => q.Answers).ToListAsync();
 
