@@ -1,0 +1,50 @@
+﻿{
+  "questions": [
+    {
+      "id": 1,
+      "content": "What is the world's most populated country?",
+      "answers": [
+        {
+          "id": 1,
+          "content": "USA"
+        },
+        {
+          "id": 2,
+          "content": "Russia"
+        },
+        {
+          "id": 3,
+          "content": "India"
+        },
+        {
+          "id": 4,
+          "content": "China"
+        }
+      ],
+      "correctAnswer": "China"
+    },
+    {
+      "id": 2,
+      "content": "Who was the original King of rock n' roll?",
+      "answers": [
+        {
+          "id": 5,
+          "content": "Michael Jackson"
+        },
+        {
+          "id": 6,
+          "content": "Mick Jagger"
+        },
+        {
+          "id": 7,
+          "content": "Elvis Presley"
+        },
+        {
+          "id": 8,
+          "content": "Steven Tyler"
+        }
+      ],
+      "correctAnswer": "Elvis Presley"
+    }
+  ]
+}
