@@ -1,14 +1,48 @@
-/* Provide sufficient contrast against white background */
+﻿/* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 code {
-  color: #E01A76;
+    color: #E01A76;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
+
+/*style changed*/
+ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+button {
+    margin-bottom: 1rem;
+    font-size: 1.5em;
+    display: block;
+    border-radius: 4px;
+}
+
+.error {
+    color: red;
+}
+
+.correct {
+    color: green;
+}
+
+.quiz_button:disabled {
+    cursor: not-allowed;
+}
+
+/*style changed*/
