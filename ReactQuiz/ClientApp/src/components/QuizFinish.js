@@ -30,7 +30,7 @@ export class QuizFinish extends React.Component {
 
         await fetch('api/highscores', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': (!token ? '' : `Bearer ${token}` ) },
+            headers: { 'Content-Type': 'application/json', 'Authorization': (!token ? '' : `Bearer ${token}`) },
             body: stringifyBody
         })
             .then(response => response.json())
@@ -41,9 +41,9 @@ export class QuizFinish extends React.Component {
     render() {
         return (
             <div>
-                <p>Congratulations!</p>
-                <button onClick={this.handleResetClick} >Start a new Quiz</button>
-                <p>Your points: {this.props.showPointsHandler}</p>
+                <h3 className="mt-5 mb-3 p-1"><i aria-hidden="true" className="chess queen icon"></i> &nbsp; Congratulations!</h3>
+                <p className="mb-3">Your score is: {this.props.showPointsHandler} points</p>
+                <button className="btn btn-info" style={{ width: 200 }} onClick={this.handleResetClick} >Start a new Quiz</button>
             </div>
         )
     }

@@ -32,31 +32,35 @@ export class Home extends Component {
         const loginPath = `${ApplicationPaths.Login}`;
         return (
             <div>
-                <h1>Hello, to the best quiz app in the world!</h1>
-
 
                 {this.state.IsUserAuthenticated ?
                     <div>
-                        <p>You are authenticated </p>
+
                         {this.state.IsQuizReady
                             ? (
                                 <Quiz />
 
                             ) : (
-                                <button onClick={this.handleStartClick}>Start Quiz</button>
+                                <div>
+                                    <h3 className="mt-5 mb-3 p-1">Hello again!</h3>
+                                    <p>Now it is time to check your knowlegde</p>
+                                    <p>Good luck !</p>
+                                    <button className="btn btn-info" style={{ width: 200 }} onClick={this.handleStartClick}>Start Quiz</button>
+                                </div>
                             )}
                     </div> :
                     <div>
+                        <h3 className="mt-5 mb-3 p-1">Hello, welcome to the best quiz app in the world!</h3>
                         <p>In order to be able to play this awesome quiz you will have to create an account on this webpage. </p>
                         <p>Do you already have an account here ?</p>
-                        <p>Then login your account and start playing this amazing quiz</p>
-                        <p>You are not authenticated</p>
-                        <p><Button >
-                            <NavLink tag={Link} className="text-dark" to={registerPath}>Register</NavLink>
-                        </Button></p>
-                        <p><Button>
-                            <NavLink tag={Link} className="text-dark" to={loginPath}>Login</NavLink>
-                        </Button></p>
+                        <p className="mb-4">Then login your account and start playing this amazing quiz</p>
+
+                        <p><button className="btn btn-info">
+                            <NavLink className="text-light" style={{ width: 200 }} tag={Link} to={registerPath}>Register</NavLink>
+                        </button></p>
+                        <p><button className="btn btn-info" >
+                            <NavLink tag={Link} className="text-light" style={{ width: 200 }} to={loginPath}>Login</NavLink>
+                        </button></p>
                     </div>
                 }
             </div>

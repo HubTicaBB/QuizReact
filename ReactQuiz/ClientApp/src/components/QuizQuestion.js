@@ -11,11 +11,12 @@ export class QuizQuestion extends React.Component {
 
             <div>
                 <div>
-                    <p>Question {this.props.quizQuestion.id}</p>
+                    <h3 className="mt-5 mb-3 p-1"><i aria-hidden="true" className="question circle icon"></i> &nbsp;Question {this.props.quizQuestion.id}</h3>
+
                     <p>{this.props.quizQuestion.content}</p>
                 </div>
                 <div className="buttons">
-                    <ul>
+                    <ul >
                         {this.props.quizQuestion.answers.map((answer, index) => {
                             return <QuizQuestionButton key={index} button_text={answer.content} is_answered={this.props.isAnswered}
                                 clickHandler={this.props.handleAnswerQuestion} />
@@ -26,11 +27,13 @@ export class QuizQuestion extends React.Component {
                 </div>
                 {this.props.isAnswered
                     ? (
-                        this.props.incorrectAnswer ? <p className="error">Sorry, your answer is incorrect</p> : <p className="correct">Correct</p>
+                        this.props.incorrectAnswer ?
+                            <p className="alert alert-danger "><i aria-hidden="true" className="thumbs down icon"></i> &nbsp; Incorrect answer...</p>
+                            : <p className=" alert alert-success"><i aria-hidden="true" className="thumbs up icon"></i> &nbsp;Correct answer!</p>
                     ) : (
-                        <p>You have to choose an answer</p>
+                        <p className="alert alert-primary"><i aria-hidden="true" className="info circle icon"></i> &nbsp;You have to choose an answer</p>
                     )}
-                {this.props.isAnswered && <button className="buttons" onClick={this.handleNextQuestion}>Next</button>}
+                {this.props.isAnswered && <button className="btn btn-primary" style={{ width: 200 }} onClick={this.handleNextQuestion}>Next</button>}
 
             </div>
         )

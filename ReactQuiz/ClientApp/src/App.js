@@ -29,13 +29,13 @@ export default class App extends Component {
 
     }
 
-    render() {        
+    render() {
         return (
 
             <Layout>
                 <Route exact path='/' component={Home} />
-                <Route path='/counter' component={Counter} />
-                <AuthorizeRoute path='/fetch-data' component={FetchData} />
+                {/* <Route path='/counter' component={Counter} />
+                <AuthorizeRoute path='/fetch-data' component={FetchData} /> */}
                 <AuthorizeRoute path='/highscores' component={Highscores} />
                 <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
 
