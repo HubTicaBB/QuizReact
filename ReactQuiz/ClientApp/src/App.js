@@ -35,30 +35,18 @@ export default class App extends Component {
                 <Route exact path='/' component={Home} />
                 <Route path='/counter' component={Counter} />
                 <AuthorizeRoute path='/fetch-data' component={FetchData} />
-                <AuthorizeRoute path='/play-quiz' component={Quiz} />
                 <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
 
-                
-
-                <Link to="/play-quiz">
-                    <button style={{ display: 'block' }} id='StartBtn' onClick={this.handleStartClick}>Start Quiz</button>
-                </Link>
-                
-
-                {/*
-                <Fragment>
+                {/*  <Fragment>
                     {this.state.isReady
                         ? (
                             <Quiz />
 
                         ) : (
-                            <div>
-                            <button onClick={this.handleStartClick} tag={Link} to="/play-quiz" >Start Quiz</button>
-                                <NavLink tag={Link} className="btn btn-success text-light" to="/play-quiz">Start-quiz</NavLink>
-                            </div>
+                            <button onClick={this.handleStartClick}>Start Quiz</button>
                         )}
-                </Fragment>
-                */}
+                </Fragment> */}
+
             </Layout>
 
         );

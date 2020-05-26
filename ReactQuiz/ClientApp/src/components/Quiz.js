@@ -1,7 +1,8 @@
 ﻿import React from 'react';
 import { QuizQuestion } from './QuizQuestion.js';
 import { QuizFinish } from './QuizFinish.js';
-import authService from './api-authorization/AuthorizeService'
+import authService from './api-authorization/AuthorizeService';
+
 
 export class Quiz extends React.Component {
     constructor(props) {
@@ -16,24 +17,15 @@ export class Quiz extends React.Component {
             points: 0
         }
     }
+    async componentDidMount() {
+        const result = await authService.isAuthenticated();
+        this.setState({ IsUserAuthenticated: result });
 
-    componentDidMount() {
-        fetch('api/questions')
-            .then(response => response.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        quizData: result
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
+        const token = await authService.getAccessToken();
+        await fetch("api/questions", { headers: !token ? {} : { 'Authorization': `Bearer ${token}` } })
+            .then((response) => response.json())
+            .then(data => this.setState({ isLoaded: true, quizData: data }))
+            .catch(err => this.setState({ isLoaded: true, error: err }));
     }
 
     showNextQuestion = () => {
@@ -62,8 +54,8 @@ export class Quiz extends React.Component {
         }
     }
 
-
     render() {
+
         const { error, isLoaded } = this.state;
         const isQuizFinished = ((this.state.position - 1) === this.state.quizData.length)
 
@@ -87,7 +79,18 @@ export class Quiz extends React.Component {
                         <QuizQuestion showNextQuestionHandler={this.showNextQuestion} handleAnswerQuestion={this.handleAnswerQuestion} isAnswered={this.state.isAnswered}
                             quizQuestion={this.state.quizData[this.state.position - 1]} incorrectAnswer={this.state.incorrectAnswer} />}
                 </div>
-            )
+            );
         }
     }
+
+
+
+    /*async populateWeatherData() {
+        const token = await authService.getAccessToken();
+        const response = await fetch('api/questions', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+        this.setState({ quizData: data, loading: false });
+    }*/
 }

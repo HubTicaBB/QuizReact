@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReactQuiz.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class QuestionsController : ControllerBase
