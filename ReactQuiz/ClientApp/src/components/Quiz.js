@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { QuizQuestion } from './QuizQuestion.js';
 import { QuizFinish } from './QuizFinish.js';
+import authService from './api-authorization/AuthorizeService';
 
 
 export class Quiz extends React.Component {
@@ -17,24 +18,7 @@ export class Quiz extends React.Component {
         }
     }
 
-    componentDidMount() {
-        fetch('api/questions')
-            .then(response => response.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        quizData: result
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
-    }
+
     showNextQuestion = () => {
         this.setState({
             position: this.state.position + 1,
@@ -89,4 +73,15 @@ export class Quiz extends React.Component {
             );
         }
     }
+
+
+
+    /*async populateWeatherData() {
+        const token = await authService.getAccessToken();
+        const response = await fetch('api/questions', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+        this.setState({ quizData: data, loading: false });
+    }*/
 }

@@ -33,7 +33,7 @@ export default class App extends Component {
                 <AuthorizeRoute path='/fetch-data' component={FetchData} />
                 <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
 
-                <Fragment>
+                {/*  <Fragment>
                     {this.state.isReady
                         ? (
                             <Quiz />
@@ -41,7 +41,8 @@ export default class App extends Component {
                         ) : (
                             <button onClick={this.handleStartClick}>Start Quiz</button>
                         )}
-                </Fragment>
+                </Fragment> */}
+
             </Layout>
 
         );
