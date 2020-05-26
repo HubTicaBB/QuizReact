@@ -26,9 +26,11 @@ export class QuizFinish extends React.Component {
         };
         const stringifyBody = JSON.stringify(body);
 
-        fetch('api/highscores', {
+        const token = await authService.getAccessToken();
+
+        await fetch('api/highscores', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': (!token ? '' : `Bearer ${token}` ) },
             body: stringifyBody
         })
             .then(response => response.json())
