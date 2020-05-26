@@ -10,6 +10,7 @@ import { ApplicationPaths } from './components/api-authorization/ApiAuthorizatio
 import { Quiz } from './components/Quiz.js';
 import { Link } from 'react-router-dom';
 import { NavLink } from 'reactstrap';
+import { Highscores } from './components/Highscores';
 
 import './custom.css';
 
@@ -35,6 +36,7 @@ export default class App extends Component {
                 <Route exact path='/' component={Home} />
                 <Route path='/counter' component={Counter} />
                 <AuthorizeRoute path='/fetch-data' component={FetchData} />
+                <AuthorizeRoute path='/highscores' component={Highscores} />
                 <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
 
                 {/*  <Fragment>
