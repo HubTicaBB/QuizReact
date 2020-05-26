@@ -17,7 +17,16 @@ export class Quiz extends React.Component {
             points: 0
         }
     }
+    async componentDidMount() {
+        const result = await authService.isAuthenticated();
+        this.setState({ IsUserAuthenticated: result });
 
+        const token = await authService.getAccessToken();
+        await fetch("api/questions", { headers: !token ? {} : { 'Authorization': `Bearer ${token}` } })
+            .then((response) => response.json())
+            .then(data => this.setState({ isLoaded: true, quizData: data }))
+            .catch(err => this.setState({ isLoaded: true, error: err }));
+    }
 
     showNextQuestion = () => {
         this.setState({
