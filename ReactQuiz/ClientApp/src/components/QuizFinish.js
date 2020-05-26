@@ -1,19 +1,39 @@
 ﻿import React from 'react';
+import authService from './api-authorization/AuthorizeService';
 
 export class QuizFinish extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: ""
+        };
+    }
+
     handleResetClick = () => {
         this.props.resetClickHandler();
     }
 
-    componentDidMount() {
-        var currentDate = new Date();
+    async componentDidMount() {
+
+        const currentDate = new Date();
+        const user = await authService.getUser();
+        this.setState({ name: user.name });
+
+        const body = {
+            username: this.state.name,
+            points: this.props.showPointsHandler,
+            date: currentDate
+        };
+        const stringifyBody = JSON.stringify(body);
+
         fetch('api/highscores', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: 'replaceByUsername', points: this.props.showPointsHandler, date: currentDate })
+            body: stringifyBody
         })
             .then(response => response.json())
-            .then(data => this.setState({ id: data.id }));
+            .then(data => console.info(data))
+            .catch(err => console.error(err));
     }
 
     render() {
