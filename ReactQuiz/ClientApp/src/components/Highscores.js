@@ -32,8 +32,10 @@ export class Highscores extends Component {
                             <td>{new Intl.DateTimeFormat('en-GB', {
                                     year: "numeric",
                                     month: "long",
-                                    day: "2-digit"
-                                }).format(Date.parse(score.date))}</td>
+                                    day: "2-digit",
+                                    hour: "2-digit",
+                                    minute: "2-digit"
+                            }).format(Date.parse(score.date + "Z"))}</td>
                         </tr>
                     )}
                 </tbody>

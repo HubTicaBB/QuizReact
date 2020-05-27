@@ -26,7 +26,10 @@ namespace ReactQuiz.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Highscore>>> GetHighscores()
         {
-            var highscores = await _context.Highscores.OrderByDescending(h => h.Points).ToListAsync();
+            var highscores = await _context.Highscores
+                .OrderByDescending(h => h.Points)
+                .ThenByDescending(h => h.Date)
+                .ToListAsync();
 
             if (highscores == null)
             {
