@@ -47,16 +47,37 @@ export class Login extends Component {
         const { message } = this.state;
 
         if (!!message) {
-            return <div>{message}</div>
+            return (<div className="ui info message mt-5 p-5">{message}</div>); 
         } else {
             switch (action) {
                 case LoginActions.Login:
-                    return (<div>Processing login</div>);
+                    return (
+                        <div class="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" class="circle notched loading icon"></i>
+                            <div class="content">
+                                <div>Loading... Please wait!</div>
+                            </div>
+                        </div>
+                    );
                 case LoginActions.LoginCallback:
-                    return (<div>Processing login callback</div>);
+                    return (
+                        <div class="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" class="circle notched loading icon"></i>
+                            <div class="content">
+                                <div>Loading... Please wait!</div>
+                            </div>
+                        </div>
+                    );
                 case LoginActions.Profile:
                 case LoginActions.Register:
-                    return (<div></div>);
+                    return (
+                        <div class="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" class="circle notched loading icon"></i>
+                            <div class="content">
+                                <div>Loading... Please wait!</div>
+                            </div>
+                        </div>
+                    );
                 default:
                     throw new Error(`Invalid action '${action}'`);
             }

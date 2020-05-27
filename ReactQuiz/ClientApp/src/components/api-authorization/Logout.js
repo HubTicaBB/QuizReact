@@ -45,19 +45,40 @@ export class Logout extends Component {
     render() {
         const { isReady, message } = this.state;
         if (!isReady) {
-            return <div></div>
+            return (
+                <div class="ui icon message mt-5 p-5">
+                    <i aria-hidden="true" class="circle notched loading icon"></i>
+                    <div class="content">
+                        <div>Processing... Please wait!</div>
+                    </div>
+                </div>
+            );
         }
         if (!!message) {
-            return (<div>{message}</div>);
+            return (<div className="ui info message mt-5 p-5">{message}</div>);
         } else {
             const action = this.props.action;
             switch (action) {
                 case LogoutActions.Logout:
-                    return (<div>Processing logout</div>);
+                    return (
+                        <div class="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" class="circle notched loading icon"></i>
+                            <div class="content">
+                                <div>Processing... Please wait!</div>
+                            </div>
+                        </div>
+                    );
                 case LogoutActions.LogoutCallback:
-                    return (<div>Processing logout callback</div>);
+                    return (
+                        <div class="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" class="circle notched loading icon"></i>
+                            <div class="content">
+                                <div>Processing... Please wait!</div>
+                            </div>
+                        </div>
+                    );
                 case LogoutActions.LoggedOut:
-                    return (<div>{message}</div>);
+                    return (<div className="ui info message mt-5 p-5">{message}</div>); 
                 default:
                     throw new Error(`Invalid action '${action}'`);
             }
