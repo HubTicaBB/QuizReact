@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import authService from './api-authorization/AuthorizeService';
-import { Table } from 'reactstrap';
+import { Table, Card, CardBody, CardTitle, Container, Row, Col } from 'reactstrap';
 
 export class Highscores extends Component {
     static displayName = Highscores.name;
@@ -18,6 +18,7 @@ export class Highscores extends Component {
 
     static renderHighscoresTable(highscores) {
         return (
+
             <Table hover>
                 <thead>
                     <tr>
@@ -29,7 +30,7 @@ export class Highscores extends Component {
                 <tbody>
                     {highscores.map(score =>
                         <tr key={score.id}>
-                            <td>{score.username}</td>
+                            <td className="text-break">{score.username}</td>
                             <td>{score.points}</td>
                             <td>{new Intl.DateTimeFormat('en-GB', {
                                 year: "numeric",
@@ -45,6 +46,56 @@ export class Highscores extends Component {
                     )}
                 </tbody>
             </Table>
+
+
+        );
+    }
+
+
+    static renderCards(highscores) {
+        return (
+            <Container>
+
+
+                <Row className="font-weight-bold">
+
+                    <Col >
+                        Username
+                        </Col>
+                    <Col >
+                        Points
+                        </Col>
+                    <Col >
+                        Date
+                        </Col>
+
+                </Row>
+
+                {highscores.map(score =>
+                    <Row className="mt-3 border-top" key={score.id} >
+                        <Col className="text-break">
+                            {score.username}
+
+                        </Col>
+                        <Col >
+                            {score.points}
+                        </Col>
+                        <Col >
+                            {new Intl.DateTimeFormat('en-GB', {
+                                year: "numeric",
+                                month: "long",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            }).format(Date.parse(score.date + 'Z'))}
+
+                        </Col>
+                    </Row>
+                )}
+
+
+            </Container >
+
         );
     }
 
@@ -55,8 +106,9 @@ export class Highscores extends Component {
 
         return (
             <div>
-                <h1 id="tabelLabel" >Highscores</h1>
+                <h1 className="mt-4 mb-4" id="tabelLabel" >Highscores</h1>
                 {contents}
+
             </div>
         );
     }
