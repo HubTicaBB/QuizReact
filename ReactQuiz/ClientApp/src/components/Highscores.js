@@ -20,7 +20,7 @@ export class Highscores extends Component {
         return (
 
             <Table hover>
-                <thead>
+                <thead className="bg-dark text-light">
                     <tr>
                         <th>Username</th>
                         <th>Score</th>
@@ -106,7 +106,7 @@ export class Highscores extends Component {
 
         return (
             <div>
-                <h1 className="mt-4 mb-4" id="tabelLabel" >Highscores</h1>
+                <h1 className="mt-4 mb-4 " id="tabelLabel" >Highscores</h1>
                 {contents}
 
             </div>
