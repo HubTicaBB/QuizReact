@@ -14,6 +14,8 @@ export class Highscores extends Component {
         this.populateHighscores();
     }
 
+
+
     static renderHighscoresTable(highscores) {
         return (
             <Table hover>
@@ -30,10 +32,15 @@ export class Highscores extends Component {
                             <td>{score.username}</td>
                             <td>{score.points}</td>
                             <td>{new Intl.DateTimeFormat('en-GB', {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "2-digit"
-                                }).format(Date.parse(score.date))}</td>
+                                year: "numeric",
+                                month: "long",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            }).format(Date.parse(score.date + 'Z'))}
+                            </td>
+
+
                         </tr>
                     )}
                 </tbody>
@@ -48,7 +55,7 @@ export class Highscores extends Component {
 
         return (
             <div>
-                <h1 id="tabelLabel" >Highscores</h1>               
+                <h1 id="tabelLabel" >Highscores</h1>
                 {contents}
             </div>
         );
