@@ -25,7 +25,7 @@ namespace ReactQuiz
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     context.Database.Migrate();
-                    DbInitializer.Initialize(context).Wait();
+                    DbInitializer.Initialize(services).Wait();
                 }
                 catch (Exception ex)
                 {

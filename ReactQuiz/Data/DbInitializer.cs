@@ -1,17 +1,25 @@
-﻿using ReactQuiz.Models;
+﻿using IdentityServer4.EntityFramework.Options;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using ReactQuiz.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace ReactQuiz.Data
 {
     public class DbInitializer
     {
-        public static async Task Initialize(ApplicationDbContext context)
+        public static async Task Initialize(IServiceProvider serviceProvider)
         {
+            using var context = new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>(),
+                serviceProvider.GetRequiredService<IOptions<OperationalStoreOptions>>());
+
             if (!context.Questions.Any())
             {
+                
                 var questions = new List<Question>
                 {
                     new Question
