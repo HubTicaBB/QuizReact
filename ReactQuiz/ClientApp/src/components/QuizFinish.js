@@ -17,25 +17,39 @@ export class QuizFinish extends React.Component {
 
         const currentDate = new Date();
         const user = await authService.getUser();
-        this.setState({ name: user.name });
-
-        const body = {
-            username: this.state.name,
-            points: this.props.showPointsHandler,
-            date: currentDate
-        };
-        const stringifyBody = JSON.stringify(body);
+        const userId = await authService.getUserId();
+        this.setState({ name: user.name, id: userId, isAdmin: false });
 
         const token = await authService.getAccessToken();
+        const response = await fetch('api/role', {
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+        if (data.userId === this.state.id) {
+            this.setState({ isAdmin: true })
+        }        
 
-        await fetch('api/highscores', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': (!token ? '' : `Bearer ${token}`) },
-            body: stringifyBody
-        })
-            .then(response => response.json())
-            .then(data => console.info(data))
-            .catch(err => console.error(err));
+        if (this.state.isAdmin) {
+            console.log("I am the admin");
+            const body = {
+                username: this.state.name,
+                points: this.props.showPointsHandler,
+                date: currentDate
+            };
+            const stringifyBody = JSON.stringify(body);
+
+            await fetch('api/highscores', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': (!token ? '' : `Bearer ${token}`) },
+                body: stringifyBody
+            })
+                .then(response => response.json())
+                .then(data => console.info(data))
+                .catch(err => console.error(err));
+        }
+        else {
+            console.log("Fuck off non-admin");
+        }
     }
 
     render() {
