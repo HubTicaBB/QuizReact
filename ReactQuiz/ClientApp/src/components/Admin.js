@@ -1,30 +1,22 @@
 ﻿import React from 'react';
 import authService from './api-authorization/AuthorizeService';
+import { Table, Card } from 'reactstrap';
 
 export class Admin extends React.Component {
     constructor(props) {
         super(props);
-
+        this.state = {
+            questions: [],
+            isLoaded: false
+        };
     }
-
 
     async componentDidMount() {
 
-        //const currentDate = new Date();
-        //const user = await authService.getUser();
-        //const userId = await authService.getUserId();
-        //this.setState({ name: user.name, id: userId, isAdmin: false });
-
         const token = await authService.getAccessToken();
-
-
-        await fetch('api/highscores', {
-
-            headers: { 'Content-Type': 'application/json', 'Authorization': (!token ? '' : `Bearer ${token}`) },
-            body: stringifyBody
-        })
-            .then(response => response.json())
-            .then(data => console.info(data))
+        await fetch("api/admin", { headers: !token ? {} : { 'Authorization': `Bearer ${token}` } })
+            .then((response) => response.json())
+            .then(data => this.setState({ questions: data, isLoaded: true }))
             .catch(err => console.error(err));
 
     }
@@ -32,8 +24,25 @@ export class Admin extends React.Component {
     render() {
         return (
             <div>
-                <p>I am the admin</p>
+
+
+                {this.state.questions.map((question) =>
+                    <Card className="mt-2 mb-2 " key={question.id}>
+                        <p className="m-2">Question {question.id}: {question.content}</p>
+
+                        <ul className="m-2"> Answers:  {
+                            question.answers.map((answer) =>
+                                <li className="m-2" key={answer.id} >
+                                    {answer.content}
+                                </li>
+                            )}
+                        </ul>
+                        <p className="m-2">Correct answer:{question.correctAnswer}</p>
+                    </Card>
+                )}
+
             </div>
-        )
+
+        );
     }
 }
