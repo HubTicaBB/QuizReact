@@ -2,6 +2,7 @@
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
+import authService from './api-authorization/AuthorizeService';
 import '../custom.css';
 
 export class NavMenu extends Component {
@@ -12,7 +13,9 @@ export class NavMenu extends Component {
 
         this.toggleNavbar = this.toggleNavbar.bind(this);
         this.state = {
-            collapsed: true
+            collapsed: true,
+            id: '',
+            isAdmin: false
         };
     }
 
@@ -20,6 +23,26 @@ export class NavMenu extends Component {
         this.setState({
             collapsed: !this.state.collapsed
         });
+    }
+
+    async componentDidMount() {
+        if (authService.isAuthenticated()) {
+
+            const userId = await authService.getUserId();
+            this.setState({ id: userId });
+
+            const token = await authService.getAccessToken();
+            const response = await fetch('api/role', {
+                headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            if (data.userId === this.state.id) {
+                this.setState({ isAdmin: true })
+
+                localStorage.setItem('isAdmin', this.state.isAdmin);
+            }
+        }
+
     }
 
     render() {
@@ -37,6 +60,13 @@ export class NavMenu extends Component {
                                 <NavItem>
                                     <NavLink tag={Link} to="/highscores">Highscores</NavLink>
                                 </NavItem>
+                                {
+                                    (this.state.isAdmin) ? <NavItem>
+                                        <NavLink tag={Link} to="/admin">Admin</NavLink>
+                                    </NavItem>
+                                        : <span></span>
+                                }
+
 
                                 <LoginMenu>
                                 </LoginMenu>

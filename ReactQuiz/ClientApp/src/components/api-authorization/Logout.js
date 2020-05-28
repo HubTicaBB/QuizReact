@@ -1,4 +1,4 @@
-import React from 'react'
+﻿import React from 'react'
 import { Component } from 'react';
 import authService from './AuthorizeService';
 import { AuthenticationResultStatus } from './AuthorizeService';
@@ -34,6 +34,8 @@ export class Logout extends Component {
                 break;
             case LogoutActions.LoggedOut:
                 this.setState({ isReady: true, message: "You successfully logged out!" });
+                //localStorage.clear();
+                localStorage.removeItem('isAdmin');
                 break;
             default:
                 throw new Error(`Invalid action '${action}'`);
@@ -78,7 +80,7 @@ export class Logout extends Component {
                         </div>
                     );
                 case LogoutActions.LoggedOut:
-                    return (<div className="ui info message mt-5 p-5">{message}</div>); 
+                    return (<div className="ui info message mt-5 p-5">{message}</div>);
                 default:
                     throw new Error(`Invalid action '${action}'`);
             }
