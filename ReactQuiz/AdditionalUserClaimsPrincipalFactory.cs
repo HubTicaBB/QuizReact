@@ -1,0 +1,57 @@
+﻿using IdentityModel;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using ReactQuiz.Models;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+namespace ReactQuiz
+{
+    //public class AdditionalUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<ApplicationUser>
+    //{
+    //    public AdditionalUserClaimsPrincipalFactory(
+    //        UserManager<ApplicationUser> userManager,
+    //        IOptions<IdentityOptions> optionsAccessor)
+    //        : base(userManager, optionsAccessor)
+    //    {
+    //    }
+
+    //    protected override async Task<ClaimsIdentity> GenerateClaimsAsync(ApplicationUser user)
+    //    {
+    //        var identity = await base.GenerateClaimsAsync(user);
+    //        identity.AddClaim(new Claim(JwtClaimTypes.Role, "admin"));
+    //        return identity;
+    //    }
+    //}
+
+    public class AdditionalUserClaimsPrincipalFactory
+          : UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>
+    {
+        public AdditionalUserClaimsPrincipalFactory(
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IOptions<IdentityOptions> optionsAccessor)
+            : base(userManager, roleManager, optionsAccessor)
+        { }
+
+        public async override Task<ClaimsPrincipal> CreateAsync(ApplicationUser user)
+        {
+            var principal = await base.CreateAsync(user);
+            var identity = (ClaimsIdentity)principal.Identity;
+
+            var claims = new List<Claim>();
+            if (user.IsAdmin)
+            {
+                claims.Add(new Claim(JwtClaimTypes.Role, "admin"));
+            }
+            else
+            {
+                claims.Add(new Claim(JwtClaimTypes.Role, "user"));
+            }
+
+            identity.AddClaims(claims);
+            return principal;
+        }
+    }
+}
