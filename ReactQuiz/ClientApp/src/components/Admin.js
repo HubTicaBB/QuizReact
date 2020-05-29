@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import authService from './api-authorization/AuthorizeService';
-import { Table, Card } from 'reactstrap';
+import { Table, Card, CardTitle, ListGroup, ListGroupItem, CardFooter, CardText, ButtonGroup, Button } from 'reactstrap';
 
 export class Admin extends React.Component {
     constructor(props) {
@@ -24,23 +24,33 @@ export class Admin extends React.Component {
     render() {
         return (
             <div>
+                <div> <Button size="lg" className=" mb-4 mt-4">Add Question</Button>
+                </div>
+                <div>
 
+                    {this.state.questions.map((question) =>
+                        <Card className="mt-2 mb-4 " key={question.id}>
+                            <CardTitle className="m-2 h3">Question {question.id}: {question.content}</CardTitle>
 
-                {this.state.questions.map((question) =>
-                    <Card className="mt-2 mb-2 " key={question.id}>
-                        <p className="m-2">Question {question.id}: {question.content}</p>
+                            <ListGroup className="m-2 "> Answers:  {
+                                question.answers.map((answer) =>
+                                    <ListGroupItem className="m-2" key={answer.id} >
+                                        {answer.content}
+                                    </ListGroupItem>
+                                )}
+                            </ListGroup>
+                            <CardText className="m-2">Correct answer:{question.correctAnswer}</CardText>
+                            <CardFooter className="bg-white">
+                                <ButtonGroup size="lg" className="mb-2 float-right">
+                                    <Button>Edit</Button>
+                                    <Button>Delete</Button>
 
-                        <ul className="m-2"> Answers:  {
-                            question.answers.map((answer) =>
-                                <li className="m-2" key={answer.id} >
-                                    {answer.content}
-                                </li>
-                            )}
-                        </ul>
-                        <p className="m-2">Correct answer:{question.correctAnswer}</p>
-                    </Card>
-                )}
+                                </ButtonGroup>
+                            </CardFooter>
+                        </Card>
+                    )}
 
+                </div>
             </div>
 
         );
