@@ -23,7 +23,6 @@ export class AddQuestionForm extends React.Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        alert("You are submitting " + this.state.questionContent);
 
         const token = authService.getAccessToken();
         const body = {
@@ -71,7 +70,7 @@ export class AddQuestionForm extends React.Component {
                         value={this.state.questionContent}
                         onChange={this.changeHandler}
                         placeholder="Question content"
-                        className="form-control"
+                        className="form-control form-control-lg"
                     />
                 </div>
                 <div className="form-group">
@@ -82,7 +81,7 @@ export class AddQuestionForm extends React.Component {
                         value={this.state.answer1}
                         onChange={this.changeHandler}
                         placeholder="Answer 1"
-                        className="form-control"
+                        className="form-control form-control-lg"
                     />
                 </div>
                 <div className="form-group">
@@ -93,7 +92,7 @@ export class AddQuestionForm extends React.Component {
                         value={this.state.answer2}
                         onChange={this.changeHandler}
                         placeholder="Answer 2"
-                        className="form-control"
+                        className="form-control form-control-lg"
                     />
                 </div>
                 <div className="form-group">
@@ -104,7 +103,7 @@ export class AddQuestionForm extends React.Component {
                         value={this.state.answer3}
                         onChange={this.changeHandler}
                         placeholder="Answer 3"
-                        className="form-control"
+                        className="form-control form-control-lg"
                     />
                 </div>
                 <div className="form-group">
@@ -115,7 +114,7 @@ export class AddQuestionForm extends React.Component {
                         value={this.state.answer4}
                         onChange={this.changeHandler}
                         placeholder="Answer 4"
-                        className="form-control"
+                        className="form-control form-control-lg"
                     />
                 </div>
                 <div className="form-group">
@@ -126,10 +125,10 @@ export class AddQuestionForm extends React.Component {
                         value={this.state.correctAnswer}
                         onChange={this.changeHandler}
                         placeholder="Correct Answer"
-                        className="form-control"
+                        className="form-control form-control-lg"
                     />
                 </div>
-                <input type='submit' />
+                <input type='submit' className='btn btn-success btn-lg' value='Submit question' />
             </form>
         );
     }
