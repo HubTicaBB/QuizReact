@@ -18,33 +18,39 @@ export class AddQuestionForm extends React.Component {
     }
 
     handleQuestionContent = event => {
+
         this.setState({
             questionContent: event.target.value
         })
     }
 
     handleAnswer1 = event => {
+
         this.setState({
             answer1: event.target.value
         })
     }
     handleAnswer2 = event => {
+
         this.setState({
             answer2: event.target.value
         })
     }
     handleAnswer3 = event => {
+
         this.setState({
             answer3: event.target.value
         })
     }
     handleAnswer4 = event => {
+
         this.setState({
             answer4: event.target.value
         })
     }
 
     handleCorrectAnswer = event => {
+
         this.setState({
             correctAnswer: event.target.value
         })
@@ -52,8 +58,9 @@ export class AddQuestionForm extends React.Component {
 
     handleSubmit = event => {
 
-        event.preventDefault()
+        event.preventDefault();
         this.submitFormHandler();
+        this.props.handler();
     }
 
 
@@ -93,54 +100,75 @@ export class AddQuestionForm extends React.Component {
         const { questionContent, answer1, answer2, answer3, answer4, correctAnswer } = this.state
         return (
             <form onSubmit={this.handleSubmit}>
-                <div>
-                    <label>Question content </label>
+                <div className="form-group">
+                    <label htmlFor="questionContent">Question content </label>
                     <input
                         type="text"
+                        id="questionContent"
                         value={questionContent}
+                        placeholder="Write question content..."
                         onChange={this.handleQuestionContent}
+                        className="form-control form-control-lg"
                     />
                 </div>
-                <div>
-                    <label>Answer 1</label>
-                    <textarea
-                        value={answer1}
-                        onChange={this.handleAnswer1}
-                    />
-                </div>
-                <div>
-                    <label>Answer 2</label>
-                    <textarea
-                        value={answer2}
-                        onChange={this.handleAnswer2}
-                    />
-                </div>
-                <div>
-                    <label>Answer 3</label>
-                    <div>
-                        <textarea
-                            value={answer3}
-                            onChange={this.handleAnswer3}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <label>Answer 4</label>
-                    <textarea
-                        value={answer4}
-                        onChange={this.handleAnswer4}
-                    />
-                </div>
-                <div>
-                    <label>Correct answer</label>
+                <div className="form-group">
+                    <label htmlFor="answer1">Answer 1</label>
                     <input
                         type="text"
-                        value={correctAnswer}
-                        onChange={this.handleCorrectAnswer}
+                        id="answer1"
+                        value={answer1}
+                        placeholder="Write answer 1..."
+                        onChange={this.handleAnswer1}
+                        className="form-control form-control-lg"
                     />
                 </div>
-                <button type="submit">Submit</button>
-            </form>
+                <div className="form-group">
+                    <label htmlFor="answer1">Answer 2</label>
+                    <input
+                        type="text"
+                        id="answer2"
+                        value={answer2}
+                        placeholder="Write answer 2..."
+                        onChange={this.handleAnswer2}
+                        className="form-control form-control-lg"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="answer1">Answer 3</label>
+                    <input
+                        type="text"
+                        id="answer3"
+                        value={answer3}
+                        placeholder="Write answer 3..."
+                        onChange={this.handleAnswer3}
+                        className="form-control form-control-lg"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="answer4">Answer 4</label>
+                    <input
+                        type="text"
+                        id="answer4"
+                        value={answer4}
+                        placeholder="Write answer 4..."
+                        onChange={this.handleAnswer4}
+                        className="form-control form-control-lg"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="correctAnswer">Correct answer</label>
+                    <input
+                        type="text"
+                        id="correctAnswer"
+                        value={correctAnswer}
+                        placeholder="Write correct answer ..."
+                        onChange={this.handleCorrectAnswer}
+                        className="form-control form-control-lg"
+                    />
+                </div>
+
+                <button type="submit" className="btn btn-success">Submit</button>
+            </form >
         )
     }
 }

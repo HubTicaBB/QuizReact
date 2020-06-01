@@ -12,10 +12,18 @@ export class Admin extends React.Component {
             isLoaded: false,
             isAddQuestionButtonClicked: false
         };
+
     }
 
     handleAddQuestion = () => {
         this.setState({ isAddQuestionButtonClicked: true });
+    }
+
+
+    handleBackToQuestions = () => {
+        this.setState({
+            isAddQuestionButtonClicked: false
+        })
     }
 
     async componentDidMount() {
@@ -37,7 +45,7 @@ export class Admin extends React.Component {
 
                 {(this.state.isAddQuestionButtonClicked) ?
                     (
-                        <AddQuestionForm />
+                        <AddQuestionForm handler={this.handleBackToQuestions} />
 
                     ) :
                     (
@@ -68,7 +76,6 @@ export class Admin extends React.Component {
                         </div>
                     )
                 }
-
 
             </div>
 
