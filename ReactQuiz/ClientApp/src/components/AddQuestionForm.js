@@ -92,52 +92,55 @@ export class AddQuestionForm extends React.Component {
     render() {
         const { questionContent, answer1, answer2, answer3, answer4, correctAnswer } = this.state
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <FormGroup>
-                    <Label>Question content </Label>
+            <form onSubmit={this.handleSubmit}>
+                <div>
+                    <label>Question content </label>
                     <input
                         type="text"
                         value={questionContent}
                         onChange={this.handleQuestionContent}
                     />
-                </FormGroup>
-                <FormGroup>
+                </div>
+                <div>
                     <label>Answer 1</label>
                     <textarea
                         value={answer1}
                         onChange={this.handleAnswer1}
                     />
-                </FormGroup>
-                <FormGroup>
+                </div>
+                <div>
                     <label>Answer 2</label>
                     <textarea
                         value={answer2}
                         onChange={this.handleAnswer2}
                     />
-                </FormGroup>
-                <FormGroup>
+                </div>
+                <div>
                     <label>Answer 3</label>
-                    <textarea
-                        value={answer3}
-                        onChange={this.handleAnswer3}
-                    />
-                </FormGroup>
-                <FormGroup>
+                    <div>
+                        <textarea
+                            value={answer3}
+                            onChange={this.handleAnswer3}
+                        />
+                    </div>
+                </div>
+                <div>
                     <label>Answer 4</label>
                     <textarea
                         value={answer4}
                         onChange={this.handleAnswer4}
                     />
-                </FormGroup>
-                <FormGroup>
+                </div>
+                <div>
                     <label>Correct answer</label>
-                    <textarea
+                    <input
+                        type="text"
                         value={correctAnswer}
                         onChange={this.handleCorrectAnswer}
                     />
-                </FormGroup>
-                <Button type="submit">Submit</Button>
-            </Form>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
         )
     }
 }
