@@ -87,6 +87,11 @@ namespace ReactQuiz.Controllers
         [HttpPost]
         public async Task<ActionResult<Question>> PostQuestion(Question question)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             _context.Questions.Add(question);
             await _context.SaveChangesAsync();
 
