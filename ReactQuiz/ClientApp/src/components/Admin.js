@@ -20,20 +20,30 @@ export class Admin extends React.Component {
     }
 
 
-    handleBackToQuestions = () => {
+    handleBackToQuestions = async () => {
+        await this.getQuestionsForAdmin();
         this.setState({
             isAddQuestionButtonClicked: false
-        })
+        });
+
     }
 
-    async componentDidMount() {
+    componentDidMount() {
 
+        this.getQuestionsForAdmin();
+
+    }
+
+    getQuestionsForAdmin = async () => {
         const token = await authService.getAccessToken();
         await fetch("api/admin", { headers: !token ? {} : { 'Authorization': `Bearer ${token}` } })
-            .then((response) => response.json())
-            .then(data => this.setState({ questions: data, isLoaded: true }))
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                this.setState({ questions: data, isLoaded: true })
+            })
             .catch(err => console.error(err));
-
     }
 
     render() {

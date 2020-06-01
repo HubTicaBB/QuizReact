@@ -21,11 +21,10 @@ export class AddQuestionForm extends React.Component {
         this.setState({ [nam]: val });
     }
 
-    submitHandler = (event) => {
+    submitHandler = async (event) => {
         event.preventDefault();
-
-        this.submitForm();
-        this.props.handler();
+        await this.submitForm();
+        await this.props.handler();
     }
 
     submitForm = async () => {
