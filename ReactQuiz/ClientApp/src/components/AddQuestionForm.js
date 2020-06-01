@@ -25,6 +25,7 @@ export class AddQuestionForm extends React.Component {
         event.preventDefault();
 
         this.submitForm();
+        this.props.handler();
     }
 
     submitForm = async () => {
