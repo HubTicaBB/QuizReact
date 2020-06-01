@@ -1,5 +1,4 @@
 ﻿import React from 'react';
-import { Button, Form, FormGroup, label, input, FormText } from 'reactstrap';
 import authService from './api-authorization/AuthorizeService';
 
 export class AddQuestionForm extends React.Component {
@@ -24,7 +23,11 @@ export class AddQuestionForm extends React.Component {
     submitHandler = (event) => {
         event.preventDefault();
 
-        const token = authService.getAccessToken();
+        this.submitForm();
+    }
+
+    submitForm = async () => {
+        const token = await authService.getAccessToken();
         const body = {
             content: this.state.questionContent,
             answers: [
@@ -45,7 +48,7 @@ export class AddQuestionForm extends React.Component {
         };
         const stringifyBody = JSON.stringify(body);
 
-        fetch('api/admin', {
+        await fetch('api/admin', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
