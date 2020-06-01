@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import authService from './api-authorization/AuthorizeService';
-import { Table, Card, CardTitle, ListGroup, ListGroupItem, CardFooter, CardText, ButtonGroup, Button } from 'reactstrap';
+import { Card, CardTitle, ListGroup, ListGroupItem, CardFooter, CardText, ButtonGroup, Button } from 'reactstrap';
 import { AddQuestionForm } from './AddQuestionForm';
 
 
@@ -29,9 +29,22 @@ export class Admin extends React.Component {
     }
 
     componentDidMount() {
+        this.getQuestionsForAdmin();
+    }
+
+
+    deleteQuestion = async (questionId) => {
+        alert(`Are you sure you want to delete Question ${questionId}?`);
+        const token = await authService.getAccessToken();
+        await fetch(`api/admin/${questionId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': (!token ? '' : `Bearer ${token}`) }
+        })
+            .then(response => response.json())
+            .then(data => console.info(data))
+            .catch(err => console.error(err));
 
         this.getQuestionsForAdmin();
-
     }
 
     getQuestionsForAdmin = async () => {
@@ -51,7 +64,6 @@ export class Admin extends React.Component {
             <div>
                 <div> <Button size="lg" className=" mb-4 mt-4" onClick={this.handleAddQuestion}>Add Question</Button>
                 </div>
-
 
                 {(this.state.isAddQuestionButtonClicked) ?
                     (
@@ -76,19 +88,16 @@ export class Admin extends React.Component {
                                     <CardFooter className="bg-white">
                                         <ButtonGroup size="lg" className="mb-2 float-right">
                                             <Button>Edit</Button>
-                                            <Button>Delete</Button>
+                                            <Button onClick={() => this.deleteQuestion(question.id)}>Delete</Button>
 
                                         </ButtonGroup>
                                     </CardFooter>
                                 </Card>
                             )}
-
                         </div>
                     )
                 }
-
             </div>
-
         );
     }
 }

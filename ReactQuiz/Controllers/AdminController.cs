@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReactQuiz.Data;
 using ReactQuiz.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ReactQuiz.Controllers
 {
@@ -100,18 +98,20 @@ namespace ReactQuiz.Controllers
 
         // DELETE: api/Admin/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Question>> DeleteQuestion(int id)
+        public async Task<IActionResult> DeleteQuestion(int id)
         {
-            var question = await _context.Questions.FindAsync(id);
+            var question = await _context.Questions.Include(q => q.Answers).FirstOrDefaultAsync(q => q.Id == id);
             if (question == null)
             {
                 return NotFound();
             }
-
+            var answers = await _context.Questions.Include(q => q.Answers).Where(q => q.Id == id).SelectMany(q => q.Answers).ToListAsync();
+            _context.Answers.RemoveRange(answers);
+            await _context.SaveChangesAsync();
             _context.Questions.Remove(question);
             await _context.SaveChangesAsync();
 
-            return question;
+            return Ok(question);
         }
 
         private bool QuestionExists(int id)
