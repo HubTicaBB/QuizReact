@@ -34,7 +34,7 @@ export class Admin extends React.Component {
 
 
     deleteQuestion = async (questionId) => {
-        alert(`Are you sure you want to delete Question ${questionId}?`);
+        alert(`This action is permanently deleting Question ${questionId}.`);
         const token = await authService.getAccessToken();
         await fetch(`api/admin/${questionId}`, {
             method: 'DELETE',
