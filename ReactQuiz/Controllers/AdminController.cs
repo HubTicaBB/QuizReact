@@ -59,6 +59,11 @@ namespace ReactQuiz.Controllers
             }
 
             _context.Entry(question).State = EntityState.Modified;
+            var answers = question.Answers;
+            foreach (var answer in answers)
+            {
+                _context.Entry(answer).State = EntityState.Modified;
+            }
 
             try
             {
@@ -76,7 +81,7 @@ namespace ReactQuiz.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(question);
         }
 
         // POST: api/Admin

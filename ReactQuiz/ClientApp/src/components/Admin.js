@@ -29,7 +29,8 @@ export class Admin extends React.Component {
     handleBackToQuestions = async () => {
         await this.getQuestionsForAdmin();
         this.setState({
-            isAddQuestionButtonClicked: false
+            isAddQuestionButtonClicked: false,
+            isEditQuestionButtonClicked: false
         });
 
     }

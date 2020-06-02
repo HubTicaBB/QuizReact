@@ -11,7 +11,12 @@ export class AddQuestionForm extends React.Component {
             answer2: '',
             answer3: '',
             answer4: '',
-            correctAnswer: ''
+            answer1Id: 0,
+            answer2Id: 0,
+            answer3Id: 0,
+            answer4Id: 0,
+            correctAnswer: '',
+            errorMessage: ''
         };
 
     }
@@ -33,9 +38,13 @@ export class AddQuestionForm extends React.Component {
                 console.log(data);
                 this.setState({
                     questionContent: data.content,
+                    answer1Id: data.answers[0].id,
                     answer1: data.answers[0].content,
+                    answer2Id: data.answers[1].id,
                     answer2: data.answers[1].content,
+                    answer3Id: data.answers[2].id,
                     answer3: data.answers[2].content,
+                    answer4Id: data.answers[3].id,
                     answer4: data.answers[3].content,
                     correctAnswer: data.correctAnswer
                 });
@@ -62,21 +71,26 @@ export class AddQuestionForm extends React.Component {
         await this.props.handler();
     }
 
-    updateForm = async (id) => {
+    updateForm = async (questionId) => {
         const token = await authService.getAccessToken();
         const body = {
+            id: questionId,
             content: this.state.questionContent,
             answers: [
                 {
+                    id: this.state.answer1Id,
                     content: this.state.answer1
                 },
                 {
+                    id: this.state.answer2Id,
                     content: this.state.answer2
                 },
                 {
+                    id: this.state.answer3Id,
                     content: this.state.answer3
                 },
                 {
+                    id: this.state.answer4Id,
                     content: this.state.answer4
                 }
             ],
@@ -84,7 +98,7 @@ export class AddQuestionForm extends React.Component {
         };
         const stringifyBody = JSON.stringify(body);
 
-        await fetch(`api/admin/${id}`, {
+        await fetch(`api/admin/${questionId}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -95,7 +109,10 @@ export class AddQuestionForm extends React.Component {
         })
             .then(response => response.json())
             .then(data => console.info(data))
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error(err);
+                this.setState({ errorMessage: err });
+            });
     }
 
     submitForm = async () => {
@@ -136,7 +153,7 @@ export class AddQuestionForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.submitHandler}>
+            <form onSubmit={this.submitHandler}>                
                 <div className="form-group">
                     <label htmlFor="questionContent">Question content:</label>
                     <input type="textarea"
@@ -144,9 +161,10 @@ export class AddQuestionForm extends React.Component {
                         id="questionContent"
                         value={this.state.questionContent}
                         onChange={this.changeHandler}
-                        placeholder="Question content"
+                        placeholder="Type here question content..."
                         className="form-control form-control-lg"
                     />
+                    <span className="text-danger" style={(this.state.questionContent === '') ? { display: 'block' } : { display: 'none' }}>This is a mandatory field</span>
                 </div>
                 <div className="form-group">
                     <label htmlFor="answer1">Answer 1:</label>
@@ -155,9 +173,10 @@ export class AddQuestionForm extends React.Component {
                         id="answer1"
                         value={this.state.answer1}
                         onChange={this.changeHandler}
-                        placeholder="Answer 1"
+                        placeholder="Type the first answer option..."
                         className="form-control form-control-lg"
                     />
+                    <span className="text-danger" style={(this.state.answer1 === '') ? { display: 'block' } : { display: 'none' }}>This is a mandatory field</span>
                 </div>
                 <div className="form-group">
                     <label htmlFor="answer2">Answer 2:</label>
@@ -166,9 +185,10 @@ export class AddQuestionForm extends React.Component {
                         id="answer2"
                         value={this.state.answer2}
                         onChange={this.changeHandler}
-                        placeholder="Answer 2"
+                        placeholder="Type the second answer option..."
                         className="form-control form-control-lg"
                     />
+                    <span className="text-danger" style={(this.state.answer2 === '') ? { display: 'block' } : { display: 'none' }}>This is a mandatory field</span>
                 </div>
                 <div className="form-group">
                     <label htmlFor="answer3">Answer 3:</label>
@@ -177,9 +197,10 @@ export class AddQuestionForm extends React.Component {
                         id="answer3"
                         value={this.state.answer3}
                         onChange={this.changeHandler}
-                        placeholder="Answer 3"
+                        placeholder="Type the third answer option..."
                         className="form-control form-control-lg"
                     />
+                    <span className="text-danger" style={(this.state.answer3 === '') ? { display: 'block' } : { display: 'none' }}>This is a mandatory field</span>
                 </div>
                 <div className="form-group">
                     <label htmlFor="answer4">Answer 4:</label>
@@ -188,9 +209,10 @@ export class AddQuestionForm extends React.Component {
                         id="answer4"
                         value={this.state.answer4}
                         onChange={this.changeHandler}
-                        placeholder="Answer 4"
+                        placeholder="Type the fourth answer option..."
                         className="form-control form-control-lg"
                     />
+                    <span className="text-danger" style={(this.state.answer4 === '') ? { display: 'block' } : { display: 'none' }}>This is a mandatory field</span>
                 </div>
                 <div className="form-group">
                     <label htmlFor="correctAnswer">Correct Answer:</label>
@@ -199,11 +221,18 @@ export class AddQuestionForm extends React.Component {
                         id="correctAnswer"
                         value={this.state.correctAnswer}
                         onChange={this.changeHandler}
-                        placeholder="Correct Answer"
+                        placeholder="Type the correct answer..."
                         className="form-control form-control-lg"
                     />
+                    <span className="text-danger" style={(this.state.correctAnswer === '') ? { display: 'block' } : { display: 'none' }}>This is a mandatory field</span>
                 </div>
-                <input type='submit' className='btn btn-success btn-lg' value='Submit question' />
+                <input type='submit' className='btn btn-success btn-lg' value='Submit question'
+                    style={(this.state.questionContent === '' ||
+                        this.state.answer1 === '' ||
+                        this.state.answer2 === '' ||
+                        this.state.answer3 === '' ||
+                        this.state.answer4 === '' ||
+                        this.state.correctAnswer === '') ? { display: 'none' } : { display: 'block' }} />
             </form>
         );
     }
