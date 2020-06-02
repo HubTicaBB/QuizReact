@@ -13,6 +13,35 @@ export class AddQuestionForm extends React.Component {
             answer4: '',
             correctAnswer: ''
         };
+
+    }
+
+    async componentDidMount() {
+        if (this.props.questionId) {
+
+            await this.getQuestionById(this.props.questionId);
+        }
+    }
+
+    getQuestionById = async (questionId) => {
+        const token = await authService.getAccessToken();
+        await fetch(`api/admin/${questionId}`, { headers: !token ? {} : { 'Authorization': `Bearer ${token}` } })
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                this.setState({
+                    questionContent: data.content,
+                    answer1: data.answers[0].content,
+                    answer2: data.answers[1].content,
+                    answer3: data.answers[2].content,
+                    answer4: data.answers[3].content,
+                    correctAnswer: data.correctAnswer
+                });
+
+            })
+            .catch(err => console.error(err));
     }
 
     changeHandler = (event) => {
@@ -23,8 +52,50 @@ export class AddQuestionForm extends React.Component {
 
     submitHandler = async (event) => {
         event.preventDefault();
-        await this.submitForm();
+        if (!this.props.questionId) {
+
+            await this.submitForm();
+        }
+        else {
+            await this.updateForm(this.props.questionId);
+        }
         await this.props.handler();
+    }
+
+    updateForm = async (id) => {
+        const token = await authService.getAccessToken();
+        const body = {
+            content: this.state.questionContent,
+            answers: [
+                {
+                    content: this.state.answer1
+                },
+                {
+                    content: this.state.answer2
+                },
+                {
+                    content: this.state.answer3
+                },
+                {
+                    content: this.state.answer4
+                }
+            ],
+            correctAnswer: this.state.correctAnswer
+        };
+        const stringifyBody = JSON.stringify(body);
+
+        await fetch(`api/admin/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': (!token ? '' : `Bearer ${token}`)
+            },
+            body: stringifyBody
+        })
+            .then(response => response.json())
+            .then(data => console.info(data))
+            .catch(err => console.error(err));
     }
 
     submitForm = async () => {

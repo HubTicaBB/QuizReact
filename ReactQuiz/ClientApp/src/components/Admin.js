@@ -10,7 +10,9 @@ export class Admin extends React.Component {
         this.state = {
             questions: [],
             isLoaded: false,
-            isAddQuestionButtonClicked: false
+            isAddQuestionButtonClicked: false,
+            isEditQuestionButtonClicked: false,
+            editQuestionId: undefined
         };
 
     }
@@ -19,6 +21,10 @@ export class Admin extends React.Component {
         this.setState({ isAddQuestionButtonClicked: true });
     }
 
+    handleEditQuestion = (questionId) => {
+        this.setState({ isEditQuestionButtonClicked: true, editQuestionId: questionId });
+
+    }
 
     handleBackToQuestions = async () => {
         await this.getQuestionsForAdmin();
@@ -65,9 +71,9 @@ export class Admin extends React.Component {
                 <div> <Button size="lg" className=" mb-4 mt-4" onClick={this.handleAddQuestion}>Add Question</Button>
                 </div>
 
-                {(this.state.isAddQuestionButtonClicked) ?
+                {(this.state.isAddQuestionButtonClicked || this.state.isEditQuestionButtonClicked) ?
                     (
-                        <AddQuestionForm handler={this.handleBackToQuestions} />
+                        <AddQuestionForm handler={this.handleBackToQuestions} questionId={this.state.editQuestionId} />
 
                     ) :
                     (
@@ -87,7 +93,7 @@ export class Admin extends React.Component {
                                     <CardText className="m-2">Correct answer:{question.correctAnswer}</CardText>
                                     <CardFooter className="bg-white">
                                         <ButtonGroup size="lg" className="mb-2 float-right">
-                                            <Button>Edit</Button>
+                                            <Button onClick={() => this.handleEditQuestion(question.id)}>Edit</Button>
                                             <Button onClick={() => this.deleteQuestion(question.id)}>Delete</Button>
 
                                         </ButtonGroup>
