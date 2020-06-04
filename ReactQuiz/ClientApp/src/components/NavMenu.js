@@ -32,17 +32,16 @@ export class NavMenu extends Component {
             this.setState({ id: userId });
 
             const token = await authService.getAccessToken();
-            const response = await fetch('api/role', {
+            const response = await fetch(`api/role/${userId}`, {
                 headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
-            if (data.userId === this.state.id) {
+            if (data[0] === "admin") {
                 this.setState({ isAdmin: true })
 
                 localStorage.setItem('isAdmin', this.state.isAdmin);
             }
         }
-
     }
 
     render() {
@@ -61,15 +60,11 @@ export class NavMenu extends Component {
                                     <NavLink tag={Link} to="/highscores">Highscores</NavLink>
                                 </NavItem>
                                 {
-                                    (this.state.isAdmin) ? <NavItem>
-                                        <NavLink tag={Link} to="/admin">Admin</NavLink>
-                                    </NavItem>
+                                    (this.state.isAdmin) ?
+                                        <NavItem><NavLink tag={Link} to="/admin">Admin</NavLink></NavItem>
                                         : <span></span>
                                 }
-
-
-                                <LoginMenu>
-                                </LoginMenu>
+                                <LoginMenu></LoginMenu>
                             </ul>
                         </Collapse>
                     </Container>

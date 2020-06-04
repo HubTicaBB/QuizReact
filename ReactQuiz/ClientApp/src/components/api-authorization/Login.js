@@ -52,18 +52,18 @@ export class Login extends Component {
             switch (action) {
                 case LoginActions.Login:
                     return (
-                        <div class="ui icon message mt-5 p-5">
-                            <i aria-hidden="true" class="circle notched loading icon"></i>
-                            <div class="content">
+                        <div className="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" className="circle notched loading icon"></i>
+                            <div className="content">
                                 <div>Loading... Please wait!</div>
                             </div>
                         </div>
                     );
                 case LoginActions.LoginCallback:
                     return (
-                        <div class="ui icon message mt-5 p-5">
-                            <i aria-hidden="true" class="circle notched loading icon"></i>
-                            <div class="content">
+                        <div className="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" className="circle notched loading icon"></i>
+                            <div className="content">
                                 <div>Loading... Please wait!</div>
                             </div>
                         </div>
@@ -71,9 +71,9 @@ export class Login extends Component {
                 case LoginActions.Profile:
                 case LoginActions.Register:
                     return (
-                        <div class="ui icon message mt-5 p-5">
-                            <i aria-hidden="true" class="circle notched loading icon"></i>
-                            <div class="content">
+                        <div className="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" className="circle notched loading icon"></i>
+                            <div className="content">
                                 <div>Loading... Please wait!</div>
                             </div>
                         </div>
