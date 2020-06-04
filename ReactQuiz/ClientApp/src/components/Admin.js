@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import authService from './api-authorization/AuthorizeService';
 import { Card, CardTitle, ListGroup, ListGroupItem, CardFooter, CardText, ButtonGroup, Button } from 'reactstrap';
-import { AddQuestionForm } from './AddQuestionForm';
+import { QuestionForm } from './QuestionForm';
 
 
 export class Admin extends React.Component {
@@ -18,11 +18,12 @@ export class Admin extends React.Component {
     }
 
     handleAddQuestion = () => {
-        this.setState({ isAddQuestionButtonClicked: true });
+
+        this.setState({ isAddQuestionButtonClicked: true, editQuestionId: undefined, isEditQuestionButtonClicked: false });
     }
 
     handleEditQuestion = (questionId) => {
-        this.setState({ isEditQuestionButtonClicked: true, editQuestionId: questionId });
+        this.setState({ isEditQuestionButtonClicked: true, editQuestionId: questionId, isAddQuestionButtonClicked: false });
 
     }
 
@@ -69,12 +70,12 @@ export class Admin extends React.Component {
     render() {
         return (
             <div>
-                <div> <Button size="lg" className=" mb-4 mt-4" onClick={this.handleAddQuestion}>Add Question</Button>
+                <div> <Button size="lg" className=" mb-4 mt-4" style={(this.state.isAddQuestionButtonClicked === true || this.state.isEditQuestionButtonClicked === true) ? { display: 'none' } : { display: 'block' }} onClick={this.handleAddQuestion}>Add Question</Button>
                 </div>
 
                 {(this.state.isAddQuestionButtonClicked || this.state.isEditQuestionButtonClicked) ?
                     (
-                        <AddQuestionForm handler={this.handleBackToQuestions} questionId={this.state.editQuestionId} />
+                        <QuestionForm handler={this.handleBackToQuestions} questionId={this.state.editQuestionId} />
 
                     ) :
                     (

@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import authService from './api-authorization/AuthorizeService';
 
-export class AddQuestionForm extends React.Component {
+export class QuestionForm extends React.Component {
     constructor(props) {
         super(props)
 
@@ -15,8 +15,7 @@ export class AddQuestionForm extends React.Component {
             answer2Id: 0,
             answer3Id: 0,
             answer4Id: 0,
-            correctAnswer: '',
-            errorMessage: ''
+            correctAnswer: ''
         };
 
     }
@@ -25,6 +24,16 @@ export class AddQuestionForm extends React.Component {
         if (this.props.questionId) {
 
             await this.getQuestionById(this.props.questionId);
+        }
+        else {
+            this.setState({
+                questionContent: '',
+                answer1: '',
+                answer2: '',
+                answer3: '',
+                answer4: '',
+                correctAnswer: '',
+            });
         }
     }
 
@@ -111,8 +120,10 @@ export class AddQuestionForm extends React.Component {
             .then(data => console.info(data))
             .catch(err => {
                 console.error(err);
-                this.setState({ errorMessage: err });
+
             });
+
+
     }
 
     submitForm = async () => {
@@ -149,11 +160,12 @@ export class AddQuestionForm extends React.Component {
             .then(response => response.json())
             .then(data => console.info(data))
             .catch(err => console.error(err));
+
     }
 
     render() {
         return (
-            <form onSubmit={this.submitHandler}>                
+            <form className="mt-4" onSubmit={this.submitHandler}>
                 <div className="form-group">
                     <label htmlFor="questionContent">Question content:</label>
                     <input type="textarea"
