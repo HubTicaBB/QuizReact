@@ -5,7 +5,7 @@ export class QuizFinish extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: ""
+            name: ''
         };
     }
 
@@ -14,7 +14,6 @@ export class QuizFinish extends React.Component {
     }
 
     async componentDidMount() {
-
         const currentDate = new Date();
         const user = await authService.getUser();
         this.setState({ name: user.name });

@@ -18,8 +18,7 @@ namespace ReactQuiz.Data
                 serviceProvider.GetRequiredService<IOptions<OperationalStoreOptions>>());
 
             if (!context.Questions.Any())
-            {
-                
+            {                
                 var questions = new List<Question>
                 {
                     new Question
@@ -263,7 +262,6 @@ namespace ReactQuiz.Data
                         }
                     }
                 };
-
                 context.Questions.AddRange(questions);
                 await context.SaveChangesAsync();
             }

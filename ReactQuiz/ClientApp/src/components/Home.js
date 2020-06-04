@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import authService from './api-authorization/AuthorizeService';
-import { NavLink, Button } from 'reactstrap'
+import { NavLink } from 'reactstrap'
 import { Quiz } from './Quiz.js';
 import { Link } from 'react-router-dom';
 import { ApplicationPaths } from './api-authorization/ApiAuthorizationConstants';
@@ -32,15 +32,13 @@ export class Home extends Component {
         const loginPath = `${ApplicationPaths.Login}`;
         return (
             <div>
-
                 {this.state.IsUserAuthenticated ?
                     <div>
-
                         {this.state.IsQuizReady
                             ? (
                                 <Quiz />
-
-                            ) : (
+                            )
+                            : (
                                 <div>
                                     <h3 className="mt-5 mb-3 p-1">Hello again!</h3>
                                     <p>Now it is time to check your knowlegde</p>
@@ -55,12 +53,16 @@ export class Home extends Component {
                         <p>Do you already have an account here ?</p>
                         <p className="mb-4">Then login your account and start playing this amazing quiz</p>
 
-                        <p><button className="btn btn-info">
-                            <NavLink className="text-light" style={{ width: 200 }} tag={Link} to={registerPath}>Register</NavLink>
-                        </button></p>
-                        <p><button className="btn btn-info" >
-                            <NavLink tag={Link} className="text-light" style={{ width: 200 }} to={loginPath}>Login</NavLink>
-                        </button></p>
+                        <p>
+                            <button className="btn btn-info">
+                                <NavLink className="text-light" style={{ width: 200 }} tag={Link} to={registerPath}>Register</NavLink>
+                            </button>
+                        </p>
+                        <p>
+                            <button className="btn btn-info" >
+                                <NavLink tag={Link} className="text-light" style={{ width: 200 }} to={loginPath}>Login</NavLink>
+                            </button>
+                        </p>
                     </div>
                 }
             </div>

@@ -35,7 +35,6 @@ namespace ReactQuiz.Controllers
             {
                 return NotFound();
             }
-
             return Ok(highscores);
         }
 

@@ -17,6 +17,7 @@ export class Quiz extends React.Component {
             points: 0
         }
     }
+
     async componentDidMount() {
         const result = await authService.isAuthenticated();
         this.setState({ IsUserAuthenticated: result });
@@ -40,11 +41,8 @@ export class Quiz extends React.Component {
     }
 
     handleAnswerQuestion = (buttonText) => {
-
         if (!this.state.isAnswered) {
-
             if (buttonText === this.state.quizData[this.state.position - 1].correctAnswer) {
-
                 this.setState({ incorrectAnswer: false, points: this.state.points + 1 });
             }
             else {
@@ -55,7 +53,6 @@ export class Quiz extends React.Component {
     }
 
     render() {
-
         const { error, isLoaded } = this.state;
         const isQuizFinished = ((this.state.position - 1) === this.state.quizData.length)
 
@@ -66,7 +63,9 @@ export class Quiz extends React.Component {
             return (
                 <div className="ui segment">
                     <div className="ui active transition visible inverted dimmer">
-                        <div className="content"><div className="ui large text loader">Loading</div></div>
+                        <div className="content">
+                            <div className="ui large text loader">Loading</div>
+                        </div>
                     </div>
                 </div>
             );
@@ -82,15 +81,4 @@ export class Quiz extends React.Component {
             );
         }
     }
-
-
-
-    /*async populateWeatherData() {
-        const token = await authService.getAccessToken();
-        const response = await fetch('api/questions', {
-            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await response.json();
-        this.setState({ quizData: data, loading: false });
-    }*/
 }
