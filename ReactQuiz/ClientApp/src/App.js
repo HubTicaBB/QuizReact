@@ -11,6 +11,7 @@ import { Quiz } from './components/Quiz.js';
 import { Link } from 'react-router-dom';
 import { NavLink } from 'reactstrap';
 import { Highscores } from './components/Highscores';
+import { Admin } from './components/Admin';
 
 import './custom.css';
 
@@ -37,17 +38,8 @@ export default class App extends Component {
                 {/* <Route path='/counter' component={Counter} />
                 <AuthorizeRoute path='/fetch-data' component={FetchData} /> */}
                 <AuthorizeRoute path='/highscores' component={Highscores} />
+                <AuthorizeRoute path='/admin' component={Admin} />
                 <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
-
-                {/*  <Fragment>
-                    {this.state.isReady
-                        ? (
-                            <Quiz />
-
-                        ) : (
-                            <button onClick={this.handleStartClick}>Start Quiz</button>
-                        )}
-                </Fragment> */}
 
             </Layout>
 

@@ -1,4 +1,4 @@
-import React from 'react'
+﻿import React from 'react'
 import { Component } from 'react';
 import authService from './AuthorizeService';
 import { AuthenticationResultStatus } from './AuthorizeService';
@@ -34,6 +34,8 @@ export class Logout extends Component {
                 break;
             case LogoutActions.LoggedOut:
                 this.setState({ isReady: true, message: "You successfully logged out!" });
+                //localStorage.clear();
+                localStorage.removeItem('isAdmin');
                 break;
             default:
                 throw new Error(`Invalid action '${action}'`);
@@ -46,9 +48,9 @@ export class Logout extends Component {
         const { isReady, message } = this.state;
         if (!isReady) {
             return (
-                <div class="ui icon message mt-5 p-5">
-                    <i aria-hidden="true" class="circle notched loading icon"></i>
-                    <div class="content">
+                <div className="ui icon message mt-5 p-5">
+                    <i aria-hidden="true" className="circle notched loading icon"></i>
+                    <div className="content">
                         <div>Processing... Please wait!</div>
                     </div>
                 </div>
@@ -61,24 +63,24 @@ export class Logout extends Component {
             switch (action) {
                 case LogoutActions.Logout:
                     return (
-                        <div class="ui icon message mt-5 p-5">
-                            <i aria-hidden="true" class="circle notched loading icon"></i>
-                            <div class="content">
+                        <div className="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" className="circle notched loading icon"></i>
+                            <div className="content">
                                 <div>Processing... Please wait!</div>
                             </div>
                         </div>
                     );
                 case LogoutActions.LogoutCallback:
                     return (
-                        <div class="ui icon message mt-5 p-5">
-                            <i aria-hidden="true" class="circle notched loading icon"></i>
-                            <div class="content">
+                        <div className="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" className="circle notched loading icon"></i>
+                            <div className="content">
                                 <div>Processing... Please wait!</div>
                             </div>
                         </div>
                     );
                 case LogoutActions.LoggedOut:
-                    return (<div className="ui info message mt-5 p-5">{message}</div>); 
+                    return (<div className="ui info message mt-5 p-5">{message}</div>);
                 default:
                     throw new Error(`Invalid action '${action}'`);
             }
