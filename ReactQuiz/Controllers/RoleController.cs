@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReactQuiz.Data;
@@ -13,7 +14,6 @@ namespace ReactQuiz.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class RoleController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -25,17 +25,17 @@ namespace ReactQuiz.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> GetAdminRole()
-        {
-            var adminRole = await _context.UserRoles.FirstOrDefaultAsync();
+        //[HttpGet]
+        //public async Task<ActionResult> GetAdminRole()
+        //{
+        //    var adminRole = await _context.UserRoles.FirstOrDefaultAsync();
 
-            if (adminRole == null)
-            {
-                return NotFound();
-            }
-            return Ok(adminRole);
-        }
+        //    if (adminRole == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(adminRole);
+        //}
 
         [HttpGet("{id}")]
         public async Task<ActionResult> GetRole(string id)
