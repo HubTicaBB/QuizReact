@@ -8,11 +8,11 @@ export class QuizQuestion extends React.Component {
 
     render() {
         return (
-
             <div>
                 <div>
-                    <h3 className="mt-5 mb-3 p-1"><i aria-hidden="true" className="question circle icon"></i> &nbsp;Question {this.props.quizQuestion.id}</h3>
-
+                    <h3 className="mt-5 mb-3 p-1">
+                        <i aria-hidden="true" className="question circle icon"></i> &nbsp;Question {this.props.quizQuestion.id}
+                    </h3>
                     <p>{this.props.quizQuestion.content}</p>
                 </div>
                 <div className="buttons">
@@ -20,9 +20,8 @@ export class QuizQuestion extends React.Component {
                         {this.props.quizQuestion.answers.map((answer, index) => {
                             return <QuizQuestionButton key={index} button_text={answer.content} is_answered={this.props.isAnswered}
                                 clickHandler={this.props.handleAnswerQuestion} />
+                            })
                         }
-                        )}
-
                     </ul>
                 </div>
                 {this.props.isAnswered
@@ -34,7 +33,6 @@ export class QuizQuestion extends React.Component {
                         <p className="alert alert-primary"><i aria-hidden="true" className="info circle icon"></i> &nbsp;You have to choose an answer</p>
                     )}
                 {this.props.isAnswered && <button className="btn btn-primary" style={{ width: 200 }} onClick={this.handleNextQuestion}>Next</button>}
-
             </div>
         )
     }

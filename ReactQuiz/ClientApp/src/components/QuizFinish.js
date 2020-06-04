@@ -14,7 +14,6 @@ export class QuizFinish extends React.Component {
     }
 
     async componentDidMount() {
-
         const currentDate = new Date();
         const user = await authService.getUser();
         this.setState({ name: user.name });
@@ -39,11 +38,14 @@ export class QuizFinish extends React.Component {
 
     render() {
         return (
-            <div>
-                <h3 className="mt-5 mb-3 p-1"><i aria-hidden="true" className="chess queen icon"></i> &nbsp; Congratulations!</h3>
-                <p className="mb-3">Your score is: {this.props.showPointsHandler} points</p>
-                <button className="btn btn-info" style={{ width: 200 }} onClick={this.handleResetClick} >Start a new Quiz</button>
-            </div>
+            <div className="mt-5 ui placeholder segment">
+                <div className="ui icon header">
+                    <i aria-hidden="true" className="chess queen icon text-success"></i>
+                    <h2 className="text-success">Congratulations!</h2>
+                    <h6 className="text-success mb-3">Your score is: {this.props.showPointsHandler} points</h6>
+                    <button className="btn btn-info" style={{ width: 200 }} onClick={this.handleResetClick} >Start a new Quiz</button>
+                </div>
+            </div>               
         )
     }
 }

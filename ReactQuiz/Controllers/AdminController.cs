@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReactQuiz.Data;
 using ReactQuiz.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -39,7 +38,6 @@ namespace ReactQuiz.Controllers
                 {
                     return NotFound();
                 }
-
                 return Ok(questions);
             }
             return response;
@@ -59,7 +57,6 @@ namespace ReactQuiz.Controllers
                 {
                     return NotFound();
                 }
-
                 return Ok(question);
             }
             return response;
@@ -100,7 +97,6 @@ namespace ReactQuiz.Controllers
                         throw;
                     }
                 }
-
                 return Ok(question);
             }
             return response;
@@ -166,7 +162,6 @@ namespace ReactQuiz.Controllers
             {
                 return null;
             }
-
             return user;
         }
 
@@ -183,7 +178,6 @@ namespace ReactQuiz.Controllers
             {
                 return Forbid();
             }
-
             return Ok();
         }
     }

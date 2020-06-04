@@ -19,13 +19,11 @@ export class Admin extends React.Component {
     }
 
     handleAddQuestion = () => {
-
         this.setState({ isAddQuestionButtonClicked: true, editQuestionId: undefined, isEditQuestionButtonClicked: false });
     }
 
     handleEditQuestion = (questionId) => {
         this.setState({ isEditQuestionButtonClicked: true, editQuestionId: questionId, isAddQuestionButtonClicked: false });
-
     }
 
     handleBackToQuestions = async () => {
@@ -34,13 +32,11 @@ export class Admin extends React.Component {
             isAddQuestionButtonClicked: false,
             isEditQuestionButtonClicked: false
         });
-
     }
 
     componentDidMount() {
         this.getQuestionsForAdmin();
     }
-
 
     deleteQuestion = async (questionId) => {
         alert(`This action is permanently deleting Question ${questionId}.`);
@@ -61,7 +57,6 @@ export class Admin extends React.Component {
         await fetch("api/admin", { headers: !token ? {} : { 'Authorization': `Bearer ${token}` } })
             .then((response) => {
                 if (response.status != 200) {
-                    console.log("You not authorized biaaatch!");
                     this.setState({ accessDenied: true });
                 }
                 else {
@@ -89,35 +84,28 @@ export class Admin extends React.Component {
         else {
             return (
                 <div>
-                    <div> <Button size="lg" className=" mb-4 mt-4" style={(this.state.isAddQuestionButtonClicked === true || this.state.isEditQuestionButtonClicked === true) ? { display: 'none' } : { display: 'block' }} onClick={this.handleAddQuestion}>Add Question</Button>
+                    <div>
+                        <Button size="lg" className="mb-4 mt-4 text-primary" style={(this.state.isAddQuestionButtonClicked || this.state.isEditQuestionButtonClicked) ? { display: 'none' } : { display: 'block' }} onClick={this.handleAddQuestion}><i aria-hidden="true" class="plus circle icon"></i>Add Question</Button>
                     </div>
-
                     {
                         (this.state.isAddQuestionButtonClicked || this.state.isEditQuestionButtonClicked) ?
-                            (
-                                <QuestionForm handler={this.handleBackToQuestions} questionId={this.state.editQuestionId} />
-
-                            ) :
+                            ( <QuestionForm handler={this.handleBackToQuestions} questionId={this.state.editQuestionId} /> ) :
                             (
                                 <div>
-
                                     {this.state.questions.map((question) =>
                                         <Card className="mt-2 mb-4 " key={question.id}>
                                             <CardTitle className="m-2 h3">Question {question.id}: {question.content}</CardTitle>
-
-                                            <ListGroup className="m-2 "> Answers:  {
-                                                question.answers.map((answer) =>
-                                                    <ListGroupItem className="m-2" key={answer.id} >
-                                                        {answer.content}
-                                                    </ListGroupItem>
+                                            <ListGroup className="m-2 ">
+                                                Answers: {
+                                                    question.answers.map((answer) =>
+                                                        <ListGroupItem className="m-2" key={answer.id}>{answer.content}</ListGroupItem>
                                                 )}
                                             </ListGroup>
                                             <CardText className="m-2">Correct answer:{question.correctAnswer}</CardText>
                                             <CardFooter className="bg-white">
                                                 <ButtonGroup size="lg" className="mb-2 float-right">
-                                                    <Button onClick={() => this.handleEditQuestion(question.id)}>Edit</Button>
-                                                    <Button onClick={() => this.deleteQuestion(question.id)}>Delete</Button>
-
+                                                    <Button onClick={() => this.handleEditQuestion(question.id)} className="text-success"><i aria-hidden="true" class="edit icon"></i>Edit</Button>
+                                                    <Button onClick={() => this.deleteQuestion(question.id)} className="text-danger"><i aria-hidden="true" class="trash alternate outline icon"></i>Delete</Button>
                                                 </ButtonGroup>
                                             </CardFooter>
                                         </Card>

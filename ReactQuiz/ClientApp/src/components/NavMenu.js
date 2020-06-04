@@ -27,7 +27,6 @@ export class NavMenu extends Component {
 
     async componentDidMount() {
         if (authService.isAuthenticated()) {
-
             const userId = await authService.getUserId();
             this.setState({ id: userId });
 
@@ -37,9 +36,7 @@ export class NavMenu extends Component {
             });
             const data = await response.json();
             if (data[0] === "admin") {
-                this.setState({ isAdmin: true })
-
-                localStorage.setItem('isAdmin', this.state.isAdmin);
+                this.setState({ isAdmin: true });
             }
         }
     }
@@ -61,7 +58,9 @@ export class NavMenu extends Component {
                                 </NavItem>
                                 {
                                     (this.state.isAdmin) ?
-                                        <NavItem><NavLink tag={Link} to="/admin">Admin</NavLink></NavItem>
+                                        <NavItem>
+                                            <NavLink tag={Link} to="/admin">Admin</NavLink>
+                                        </NavItem>
                                         : <span></span>
                                 }
                                 <LoginMenu></LoginMenu>

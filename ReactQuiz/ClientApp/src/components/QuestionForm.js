@@ -17,12 +17,10 @@ export class QuestionForm extends React.Component {
             answer4Id: 0,
             correctAnswer: ''
         };
-
     }
 
     async componentDidMount() {
         if (this.props.questionId) {
-
             await this.getQuestionById(this.props.questionId);
         }
         else {
@@ -57,7 +55,6 @@ export class QuestionForm extends React.Component {
                     answer4: data.answers[3].content,
                     correctAnswer: data.correctAnswer
                 });
-
             })
             .catch(err => console.error(err));
     }
@@ -71,7 +68,6 @@ export class QuestionForm extends React.Component {
     submitHandler = async (event) => {
         event.preventDefault();
         if (!this.props.questionId) {
-
             await this.submitForm();
         }
         else {
@@ -120,10 +116,7 @@ export class QuestionForm extends React.Component {
             .then(data => console.info(data))
             .catch(err => {
                 console.error(err);
-
             });
-
-
     }
 
     submitForm = async () => {
@@ -160,7 +153,6 @@ export class QuestionForm extends React.Component {
             .then(response => response.json())
             .then(data => console.info(data))
             .catch(err => console.error(err));
-
     }
 
     render() {
@@ -244,7 +236,8 @@ export class QuestionForm extends React.Component {
                         this.state.answer2 === '' ||
                         this.state.answer3 === '' ||
                         this.state.answer4 === '' ||
-                        this.state.correctAnswer === '') ? { display: 'none' } : { display: 'block' }} />
+                        this.state.correctAnswer === '') ? { display: 'none' } : { display: 'block' }}
+                />
             </form>
         );
     }
