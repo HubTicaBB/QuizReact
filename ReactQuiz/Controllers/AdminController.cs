@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReactQuiz.Data;
 using ReactQuiz.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -29,10 +30,149 @@ namespace ReactQuiz.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
         {
+            var response = await IsAdminLoggedIn();
+
+            if (response.GetType() == typeof(OkResult))
+            {
+                var questions = await _context.Questions.Include(q => q.Answers).ToListAsync();
+                if (questions == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(questions);
+            }
+            return response;
+        }
+
+        // GET: api/Admin/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Question>> GetQuestion(int id)
+        {
+            var response = await IsAdminLoggedIn();
+
+            if (response.GetType() == typeof(OkResult))
+            {
+                var question = await _context.Questions.Include(q => q.Answers).FirstOrDefaultAsync(q => q.Id == id);
+
+                if (question == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(question);
+            }
+            return response;
+        }
+
+        // PUT: api/Admin/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutQuestion(int id, Question question)
+        {
+            var response = await IsAdminLoggedIn();
+
+            if (response.GetType() == typeof(OkResult))
+            {
+                if (id != question.Id)
+                {
+                    return BadRequest();
+                }
+
+                _context.Entry(question).State = EntityState.Modified;
+                var answers = question.Answers;
+                foreach (var answer in answers)
+                {
+                    _context.Entry(answer).State = EntityState.Modified;
+                }
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!QuestionExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return Ok(question);
+            }
+            return response;
+        }
+
+        // POST: api/Admin
+        [HttpPost]
+        public async Task<ActionResult<Question>> PostQuestion(Question question)
+        {
+            var response = await IsAdminLoggedIn();
+
+            if (response.GetType() == typeof(OkResult))
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+
+                _context.Questions.Add(question);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetQuestion", new { id = question.Id }, question);
+            }
+            return response;            
+        }
+
+        // DELETE: api/Admin/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteQuestion(int id)
+        {
+            var response = await IsAdminLoggedIn();
+
+            if (response.GetType() == typeof(OkResult))
+            {
+                var question = await _context.Questions.Include(q => q.Answers).FirstOrDefaultAsync(q => q.Id == id);
+                if (question == null)
+                {
+                    return NotFound();
+                }
+                var answers = await _context.Questions.Include(q => q.Answers).Where(q => q.Id == id).SelectMany(q => q.Answers).ToListAsync();
+                _context.Answers.RemoveRange(answers);
+                await _context.SaveChangesAsync();
+                _context.Questions.Remove(question);
+                await _context.SaveChangesAsync();
+
+                return Ok(question);
+            }
+            return response;            
+        }
+
+        private bool QuestionExists(int id)
+        {
+            return _context.Questions.Any(e => e.Id == id);
+        }
+
+        private ApplicationUser GetUser()
+        {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var user = _context.Users.Find(claim.Value);
 
-            var user = await _context.Users.FindAsync(claim.Value);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user;
+        }
+
+        private async Task<ActionResult> IsAdminLoggedIn()
+        {
+            var user = GetUser();
             if (user == null)
             {
                 return BadRequest();
@@ -44,105 +184,7 @@ namespace ReactQuiz.Controllers
                 return Forbid();
             }
 
-            var questions = await _context.Questions.Include(q => q.Answers).ToListAsync();
-
-            if (questions == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(questions);
-        }
-
-        // GET: api/Admin/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Question>> GetQuestion(int id)
-        {
-            var question = await _context.Questions.Include(q => q.Answers).FirstOrDefaultAsync(q => q.Id == id);
-
-            if (question == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(question);
-        }
-
-        // PUT: api/Admin/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutQuestion(int id, Question question)
-        {
-            if (id != question.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(question).State = EntityState.Modified;
-            var answers = question.Answers;
-            foreach (var answer in answers)
-            {
-                _context.Entry(answer).State = EntityState.Modified;
-            }
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!QuestionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok(question);
-        }
-
-        // POST: api/Admin
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Question>> PostQuestion(Question question)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            _context.Questions.Add(question);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetQuestion", new { id = question.Id }, question);
-        }
-
-        // DELETE: api/Admin/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteQuestion(int id)
-        {
-            var question = await _context.Questions.Include(q => q.Answers).FirstOrDefaultAsync(q => q.Id == id);
-            if (question == null)
-            {
-                return NotFound();
-            }
-            var answers = await _context.Questions.Include(q => q.Answers).Where(q => q.Id == id).SelectMany(q => q.Answers).ToListAsync();
-            _context.Answers.RemoveRange(answers);
-            await _context.SaveChangesAsync();
-            _context.Questions.Remove(question);
-            await _context.SaveChangesAsync();
-
-            return Ok(question);
-        }
-
-        private bool QuestionExists(int id)
-        {
-            return _context.Questions.Any(e => e.Id == id);
+            return Ok();
         }
     }
 }
