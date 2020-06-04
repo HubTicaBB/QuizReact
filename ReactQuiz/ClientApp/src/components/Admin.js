@@ -57,7 +57,6 @@ export class Admin extends React.Component {
         await fetch("api/admin", { headers: !token ? {} : { 'Authorization': `Bearer ${token}` } })
             .then((response) => {
                 if (response.status != 200) {
-                    console.log("You not authorized biaaatch!");
                     this.setState({ accessDenied: true });
                 }
                 else {
@@ -86,7 +85,7 @@ export class Admin extends React.Component {
             return (
                 <div>
                     <div>
-                        <Button size="lg" className="mb-4 mt-4" style={(this.state.isAddQuestionButtonClicked || this.state.isEditQuestionButtonClicked) ? { display: 'none' } : { display: 'block' }} onClick={this.handleAddQuestion}>Add Question</Button>
+                        <Button size="lg" className="mb-4 mt-4 text-primary" style={(this.state.isAddQuestionButtonClicked || this.state.isEditQuestionButtonClicked) ? { display: 'none' } : { display: 'block' }} onClick={this.handleAddQuestion}><i aria-hidden="true" class="plus circle icon"></i>Add Question</Button>
                     </div>
                     {
                         (this.state.isAddQuestionButtonClicked || this.state.isEditQuestionButtonClicked) ?
@@ -105,8 +104,8 @@ export class Admin extends React.Component {
                                             <CardText className="m-2">Correct answer:{question.correctAnswer}</CardText>
                                             <CardFooter className="bg-white">
                                                 <ButtonGroup size="lg" className="mb-2 float-right">
-                                                    <Button onClick={() => this.handleEditQuestion(question.id)}>Edit</Button>
-                                                    <Button onClick={() => this.deleteQuestion(question.id)}>Delete</Button>
+                                                    <Button onClick={() => this.handleEditQuestion(question.id)} className="text-success"><i aria-hidden="true" class="edit icon"></i>Edit</Button>
+                                                    <Button onClick={() => this.deleteQuestion(question.id)} className="text-danger"><i aria-hidden="true" class="trash alternate outline icon"></i>Delete</Button>
                                                 </ButtonGroup>
                                             </CardFooter>
                                         </Card>
