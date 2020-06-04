@@ -12,7 +12,8 @@ export class Admin extends React.Component {
             isLoaded: false,
             isAddQuestionButtonClicked: false,
             isEditQuestionButtonClicked: false,
-            editQuestionId: undefined
+            editQuestionId: undefined,
+            accessDenied: false
         };
 
     }
@@ -59,7 +60,13 @@ export class Admin extends React.Component {
         const token = await authService.getAccessToken();
         await fetch("api/admin", { headers: !token ? {} : { 'Authorization': `Bearer ${token}` } })
             .then((response) => {
-                return response.json();
+                if (response.status != 200) {
+                    console.log("You not authorized biaaatch!");
+                    this.setState({ accessDenied: true });
+                }
+                else {
+                    return response.json();
+                }
             })
             .then(data => {
                 this.setState({ questions: data, isLoaded: true })
@@ -68,44 +75,58 @@ export class Admin extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <div> <Button size="lg" className=" mb-4 mt-4" style={(this.state.isAddQuestionButtonClicked === true || this.state.isEditQuestionButtonClicked === true) ? { display: 'none' } : { display: 'block' }} onClick={this.handleAddQuestion}>Add Question</Button>
+        if (this.state.accessDenied) {
+            return (
+                <div className="mt-5 ui placeholder segment">
+                    <div className="ui icon header">
+                        <i aria-hidden="true" className="lock icon text-danger"></i>
+                        <h2 className="text-danger">Access denied</h2>
+                        <h6 className="text-danger">You are not authorized to visit this page</h6>
+                    </div>
+                </div>                  
+            );
+        }
+        else {
+            return (
+                <div>
+                    <div> <Button size="lg" className=" mb-4 mt-4" style={(this.state.isAddQuestionButtonClicked === true || this.state.isEditQuestionButtonClicked === true) ? { display: 'none' } : { display: 'block' }} onClick={this.handleAddQuestion}>Add Question</Button>
+                    </div>
+
+                    {
+                        (this.state.isAddQuestionButtonClicked || this.state.isEditQuestionButtonClicked) ?
+                            (
+                                <QuestionForm handler={this.handleBackToQuestions} questionId={this.state.editQuestionId} />
+
+                            ) :
+                            (
+                                <div>
+
+                                    {this.state.questions.map((question) =>
+                                        <Card className="mt-2 mb-4 " key={question.id}>
+                                            <CardTitle className="m-2 h3">Question {question.id}: {question.content}</CardTitle>
+
+                                            <ListGroup className="m-2 "> Answers:  {
+                                                question.answers.map((answer) =>
+                                                    <ListGroupItem className="m-2" key={answer.id} >
+                                                        {answer.content}
+                                                    </ListGroupItem>
+                                                )}
+                                            </ListGroup>
+                                            <CardText className="m-2">Correct answer:{question.correctAnswer}</CardText>
+                                            <CardFooter className="bg-white">
+                                                <ButtonGroup size="lg" className="mb-2 float-right">
+                                                    <Button onClick={() => this.handleEditQuestion(question.id)}>Edit</Button>
+                                                    <Button onClick={() => this.deleteQuestion(question.id)}>Delete</Button>
+
+                                                </ButtonGroup>
+                                            </CardFooter>
+                                        </Card>
+                                    )}
+                                </div>
+                            )
+                    }
                 </div>
-
-                {(this.state.isAddQuestionButtonClicked || this.state.isEditQuestionButtonClicked) ?
-                    (
-                        <QuestionForm handler={this.handleBackToQuestions} questionId={this.state.editQuestionId} />
-
-                    ) :
-                    (
-                        <div>
-
-                            {this.state.questions.map((question) =>
-                                <Card className="mt-2 mb-4 " key={question.id}>
-                                    <CardTitle className="m-2 h3">Question {question.id}: {question.content}</CardTitle>
-
-                                    <ListGroup className="m-2 "> Answers:  {
-                                        question.answers.map((answer) =>
-                                            <ListGroupItem className="m-2" key={answer.id} >
-                                                {answer.content}
-                                            </ListGroupItem>
-                                        )}
-                                    </ListGroup>
-                                    <CardText className="m-2">Correct answer:{question.correctAnswer}</CardText>
-                                    <CardFooter className="bg-white">
-                                        <ButtonGroup size="lg" className="mb-2 float-right">
-                                            <Button onClick={() => this.handleEditQuestion(question.id)}>Edit</Button>
-                                            <Button onClick={() => this.deleteQuestion(question.id)}>Delete</Button>
-
-                                        </ButtonGroup>
-                                    </CardFooter>
-                                </Card>
-                            )}
-                        </div>
-                    )
-                }
-            </div>
-        );
+            );
+        }
     }
 }

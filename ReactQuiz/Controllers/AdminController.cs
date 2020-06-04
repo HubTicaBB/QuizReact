@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReactQuiz.Data;
 using ReactQuiz.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ReactQuiz.Controllers
@@ -15,16 +17,33 @@ namespace ReactQuiz.Controllers
     public class AdminController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: api/Admin
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
         {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            var user = await _context.Users.FindAsync(claim.Value);
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Count == 0 || roles[0] != "admin")
+            {
+                return Forbid();
+            }
+
             var questions = await _context.Questions.Include(q => q.Answers).ToListAsync();
 
             if (questions == null)
