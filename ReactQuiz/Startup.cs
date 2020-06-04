@@ -11,6 +11,9 @@ using ReactQuiz.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Threading.Tasks;
+using IdentityServer4.EntityFramework.Options;
 
 namespace ReactQuiz
 {
@@ -31,10 +34,14 @@ namespace ReactQuiz
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+
+            var storeOptions = new ConfigurationStoreOptions();
+            services.AddSingleton(storeOptions);
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
@@ -50,7 +57,7 @@ namespace ReactQuiz
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -90,6 +97,42 @@ namespace ReactQuiz
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            CreateRoles(serviceProvider).Wait();
+        }
+
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+            string adminRole = "admin";
+            IdentityResult result;
+
+            var adminRoleExists = await roleManager.RoleExistsAsync(adminRole);
+            if (!adminRoleExists)
+            {
+                result = await roleManager.CreateAsync(new IdentityRole(adminRole));
+            }
+
+            var admin = new ApplicationUser
+            {
+                UserName = Configuration["AdminEmail"],
+                Email = Configuration["AdminEmail"]
+            };
+
+            var password = Configuration["AdminPassword"];
+
+            var user = await userManager.FindByNameAsync(Configuration["AdminEmail"]);
+            if (user == null)
+            {
+                var adminAdded = await userManager.CreateAsync(admin, password);
+                if (adminAdded.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, "Admin");
+                }
+            }
+            
         }
     }
 }

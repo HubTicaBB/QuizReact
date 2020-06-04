@@ -18,6 +18,7 @@ export class QuizFinish extends React.Component {
         const currentDate = new Date();
         const user = await authService.getUser();
         this.setState({ name: user.name });
+        const token = await authService.getAccessToken();
 
         const body = {
             username: this.state.name,
@@ -25,8 +26,6 @@ export class QuizFinish extends React.Component {
             date: currentDate
         };
         const stringifyBody = JSON.stringify(body);
-
-        const token = await authService.getAccessToken();
 
         await fetch('api/highscores', {
             method: 'POST',
