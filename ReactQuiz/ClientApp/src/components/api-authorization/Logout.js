@@ -48,9 +48,9 @@ export class Logout extends Component {
         const { isReady, message } = this.state;
         if (!isReady) {
             return (
-                <div class="ui icon message mt-5 p-5">
-                    <i aria-hidden="true" class="circle notched loading icon"></i>
-                    <div class="content">
+                <div className="ui icon message mt-5 p-5">
+                    <i aria-hidden="true" className="circle notched loading icon"></i>
+                    <div className="content">
                         <div>Processing... Please wait!</div>
                     </div>
                 </div>
@@ -63,18 +63,18 @@ export class Logout extends Component {
             switch (action) {
                 case LogoutActions.Logout:
                     return (
-                        <div class="ui icon message mt-5 p-5">
-                            <i aria-hidden="true" class="circle notched loading icon"></i>
-                            <div class="content">
+                        <div className="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" className="circle notched loading icon"></i>
+                            <div className="content">
                                 <div>Processing... Please wait!</div>
                             </div>
                         </div>
                     );
                 case LogoutActions.LogoutCallback:
                     return (
-                        <div class="ui icon message mt-5 p-5">
-                            <i aria-hidden="true" class="circle notched loading icon"></i>
-                            <div class="content">
+                        <div className="ui icon message mt-5 p-5">
+                            <i aria-hidden="true" className="circle notched loading icon"></i>
+                            <div className="content">
                                 <div>Processing... Please wait!</div>
                             </div>
                         </div>
